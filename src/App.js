@@ -2,9 +2,9 @@ import { Route, Link } from 'react-router-dom';
 
 import {
     BasicMap,
-    SelectLayer,
     GeoJson,
     LayerOpacity,
+    LayerSelect,
     Measure,
     Merge,
     SplitPolygon,
@@ -32,7 +32,7 @@ function App() {
                 <Link to='/merge'>폴리곤 병합</Link>
                 <Link to='/splitPolygon'>폴리곤 드래그 생성</Link>
                 <Link to='/layerOpacity'>레이어 투명도</Link>
-                <Link to='/selectLayer'>레이어별 Select</Link>
+                <Link to='/layerSelect'>레이어별 Select</Link>
             </div>
             <Map>
                 <Route path='/basicMap' component={BasicMap} />
@@ -45,7 +45,7 @@ function App() {
                 <Route path='/merge' component={Merge} />
                 <Route path='/splitPolygon' component={SplitPolygon} />
                 <Route path='/layerOpacity' component={LayerOpacity} />
-                <Route path='/selectLayer' component={SelectLayer} />
+                <Route path='/layerSelect' component={LayerSelect} />
             </Map>
         </>
     );

@@ -18,4 +18,4 @@
 
 #### 8) 레이어 투명도(LayerOpacity): Slider를 이용하여 Polygon의 투명도 조정
 
-#### 9) 레이어별 Select(SelectLayer): Layer선택 후 해당 Layer만 Click 가능
+#### 9) 레이어별 Select(LayerSelect): Layer선택 후 해당 Layer만 Click 가능

@@ -95,14 +95,6 @@ const SelectLayer = () => {
         return styles[feature.id_];
     };
 
-    // const translateFunction = ({ selectLayer, map }) => {
-    //     let translate = new Translate({
-    //         features: selectLayer.getFeatures(),
-    //     });
-
-    //     map.addInteraction(translate);
-    // };
-
     const osmLayer = new TileLayer({
         source: new OSM(),
     });
@@ -194,17 +186,8 @@ const SelectLayer = () => {
         map.addInteraction(translateFunction(selectLayer));
         map.addInteraction(selectLayer);
 
-        console.log('map Interactions', map.getInteractions());
-
         return selectLayer;
     }
-
-    // useEffect(() => {
-    //     console.log('inter inter', map.getInteractions());
-    //     console.log('selectLayer selectLayer', selectLayer);
-    //     console.log('select select', select);
-    //     map.addInteraction(select);
-    // }, [selectLayer]);
 
     const map = new Map({
         interactions: defaultInteractions().extend([]),
@@ -232,10 +215,6 @@ const SelectLayer = () => {
             projection: 'EPSG:4326',
         }),
     });
-
-    console.log('map Interaions', map.getInteractions());
-
-    const glory = document.getElementById('map1');
 
     // glory.addEventListener('mousedown', (e) => {
     //     console.log('mousedown mousedown mousedown mousedown');

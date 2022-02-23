@@ -3,7 +3,7 @@ import GeoJson from './GeoJson';
 import LayerOpacity from './LayerOpacity';
 import Measure from './Measure';
 import Merge from './Merge';
-import SelectLayer from './SelectLayer';
+import LayerSelect from './LayerSelect';
 import SplitPolygon from './SplitPolygon';
 import StreetLabels from './StreetLabels';
 import VectorInfo from './VectorInfo';
@@ -12,9 +12,9 @@ import WMSSample from './WMSSample';
 
 export {
     BasicMap,
-    SelectLayer,
     GeoJson,
     LayerOpacity,
+    LayerSelect,
     Measure,
     Merge,
     SplitPolygon,
