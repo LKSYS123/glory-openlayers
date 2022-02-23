@@ -1,70 +1,21 @@
-# Getting Started with Create React App
+# Openlayers 기능 구현
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## List
 
-## Available Scripts
+#### 1) 이동범위 제한(StreetLabel): 특정범위 밖으로 지도 이동 불가
 
-In the project directory, you can run:
+#### 2) 도형그리기(Measure): 선 혹은 도형을 그려 길이와 넓이 측정
 
-### `yarn start`
+#### 3) 좌표로 도형생성: json 형식으로 좌표에 대한 정보 입력 후 지도에 출력
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+#### 4) WMS이미지: geoserver에서 WMS이미지를 받아 지도에 출력
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+#### 5) WMS샘플: 위 이미지를 선만 출력
 
-### `yarn test`
+#### 6) Vector이미지: VectorLayer를 이용하여 지도에 출력
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+#### 7) 폴리곤 드래그 생성: 드래그 하여 해당 범위안에 Polygon 생성
 
-### `yarn build`
+#### 8) 레이어 투명도: Slider를 이용하여 Polygon의 투명도 조정
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+#### 9) 레이어별 Select: Layer선택 후 해당 Layer만 Click 가능
