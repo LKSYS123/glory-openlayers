@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { OSM } from 'ol/source';
 import {
@@ -17,9 +18,14 @@ import Map from 'ol/Map';
 import 'ol/ol.css';
 import { Overlay } from 'ol';
 import { LineString, Point, Polygon } from 'ol/geom';
-import { Select, Translate, defaults as defaultInteractions, Draw, Modify } from 'ol/interaction';
-import OL3Parser, { io } from 'jsts';
-
+import {
+    Select,
+    Translate,
+    defaults as defaultInteractions,
+    Draw,
+    Modify,
+} from 'ol/interaction';
+import OL3Parser from 'jsts/org/locationtech/jts/io/OL3Parser';
 
 const Merge = () => {
     const clearPrevious = document.getElementById('clear');
@@ -28,7 +34,6 @@ const Merge = () => {
     let draw;
 
     useEffect(() => {
-
         const style = new Style({
             fill: new Fill({
                 color: 'rgba(255, 255, 255, 0.2)',
@@ -56,18 +61,18 @@ const Merge = () => {
             stroke: new Stroke({
                 color: '#0e97fa',
                 width: 3,
-            })
+            }),
         });
 
         const highlightStyle = new Style({
             stroke: new Stroke({
                 color: 'rgba(255, 0, 0, 0.6)',
-                width: 3
+                width: 3,
             }),
             fill: new Fill({
-                color: 'rgba(255, 0, 0, 0.2)'
+                color: 'rgba(255, 0, 0, 0.2)',
             }),
-            zIndex: 1
+            zIndex: 1,
         });
 
         const modifyStyle = new Style({
@@ -208,7 +213,9 @@ const Merge = () => {
                     if (segmentStyles.length - 1 < count) {
                         segmentStyles.push(segmentStyle.clone());
                     }
-                    const segmentPoint = new Point(segment.getCoordinateAt(0.5));
+                    const segmentPoint = new Point(
+                        segment.getCoordinateAt(0.5)
+                    );
                     segmentStyles[count].setGeometry(segmentPoint);
                     segmentStyles[count].getText().setText(label);
                     styles.push(segmentStyles[count]);
@@ -233,10 +240,10 @@ const Merge = () => {
         }
 
         const overlay = new Overlay({
-            element: document.getElementById("popupContainer"),
+            element: document.getElementById('popupContainer'),
             offset: [0, -15],
             positioning: 'bottom-center',
-            className: 'ol-tooltip-measure ol-tooltip ol-tooltip-static'
+            className: 'ol-tooltip-measure ol-tooltip ol-tooltip-static',
         });
 
         const attribution = new Attribution({
@@ -255,17 +262,19 @@ const Merge = () => {
 
         const map = new Map({
             interactions: defaultInteractions().extend([select, translate]),
-            controls: defaultControls({ attribution: false }).extend([attribution]),
+            controls: defaultControls({ attribution: false }).extend([
+                attribution,
+            ]),
             layers: [osmLayer],
             target: 'map',
             view: new View({
                 center: [1851716.2622, 4813000.4846],
                 zoom: 14,
-            })
+            }),
         });
 
         const source = new VectorSource({
-            projection: map.getView().projection
+            projection: map.getView().projection,
         });
 
         const vectorLayer = new VectorLayer({
@@ -274,7 +283,7 @@ const Merge = () => {
         });
 
         const modify = new Modify({ source: source, style: modifyStyle });
-        
+
         function addInteraction() {
             const idleTip = 'Click to start measuring';
             let tip = idleTip;
@@ -284,7 +293,12 @@ const Merge = () => {
                 type: drawType,
                 stopClick: true,
                 style: function (feature) {
-                    return styleFunction(feature, showSegments.checked, drawType, tip);
+                    return styleFunction(
+                        feature,
+                        showSegments.checked,
+                        drawType,
+                        tip
+                    );
                 },
             });
             draw.on('drawstart', function () {
@@ -318,7 +332,7 @@ const Merge = () => {
             removeInteractions();
 
             map.addInteraction(draw);
-        }
+        };
 
         const mergePolygon = (e) => {
             /*
@@ -327,16 +341,20 @@ const Merge = () => {
             */
 
             //Create jsts parser to read openlayers geometry
-            const parser = new io.OL3Parser();
+            const parser = new OL3Parser();
 
             //Parse Polygons geometry to jsts type
-            const a = parser.read(vectorLayer.getSource().getFeatures()[0].getGeometry());
-            const b = parser.read(vectorLayer.getSource().getFeatures()[1].getGeometry());
+            const a = parser.read(
+                vectorLayer.getSource().getFeatures()[0].getGeometry()
+            );
+            const b = parser.read(
+                vectorLayer.getSource().getFeatures()[1].getGeometry()
+            );
 
             //Perform union of Polygons. The union function below will merge two polygon together
             const union = a.union(b);
             const merged_polygon = new Feature({
-                geometry: new Polygon(parser.write(union).getCoordinates())
+                geometry: new Polygon(parser.write(union).getCoordinates()),
             });
             vectorLayer.getSource().clear();
             vectorLayer.getSource().addFeature(merged_polygon);
@@ -345,19 +363,20 @@ const Merge = () => {
 
         //Remove map interactions except default interactions
         const removeInteractions = () => {
-            map.getInteractions().getArray().forEach((interaction, i) => {
-                if (i > 7) {
-                    map.removeInteraction(interaction);
-                }
-            });
-        }
+            map.getInteractions()
+                .getArray()
+                .forEach((interaction, i) => {
+                    if (i > 7) {
+                        map.removeInteraction(interaction);
+                    }
+                });
+        };
 
         //Drag feature
         const moveFeature = () => {
             removeInteractions();
             map.addInteraction(new Translate());
-        }
-
+        };
 
         //Clear vector features and overlays and remove any interaction
         const clearGraphics = () => {
@@ -367,25 +386,41 @@ const Merge = () => {
             vectorLayer.setStyle(regularStyle);
         };
 
-        document.getElementById("btn1").onclick = drawPolygon;
+        document.getElementById('btn1').onclick = drawPolygon;
 
-        document.getElementById("btn2").onclick = mergePolygon;
+        document.getElementById('btn2').onclick = mergePolygon;
 
-        document.getElementById("btn3").onclick = moveFeature;
+        document.getElementById('btn3').onclick = moveFeature;
 
-        document.getElementById("btn4").onclick = clearGraphics;
+        document.getElementById('btn4').onclick = clearGraphics;
     }, []);
 
     return (
         <>
-            <div class="toolbar" style={{ marginBottom: 20 }}>
-                <button id="btn1" style={{ marginLeft: 10 }}>Draw Polygon</button>
-                <button id="btn2" style={{ marginLeft: 10 }}>Merge Polygons</button>
-                <button id="btn3" style={{ marginLeft: 10 }}>Move Feature</button>
-                <button id="btn4" style={{ marginLeft: 10 }}>Clear Graphics</button>
+            <div class='toolbar' style={{ marginBottom: 20 }}>
+                <button id='btn1' style={{ marginLeft: 10 }}>
+                    Draw Polygon
+                </button>
+                <button id='btn2' style={{ marginLeft: 10 }}>
+                    Merge Polygons
+                </button>
+                <button id='btn3' style={{ marginLeft: 10 }}>
+                    Move Feature
+                </button>
+                <button id='btn4' style={{ marginLeft: 10 }}>
+                    Clear Graphics
+                </button>
             </div>
-            <div id="map" class="map" style={{ width: '98vw', height: '85vh', margin: 10, border: '1px solid' }}>
-            </div>
+            <div
+                id='map'
+                class='map'
+                style={{
+                    width: '98vw',
+                    height: '85vh',
+                    margin: 10,
+                    border: '1px solid',
+                }}
+            ></div>
         </>
     );
 };

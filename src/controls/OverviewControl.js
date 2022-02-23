@@ -1,9 +1,8 @@
-import React, { useContext, useEffect } from "react";
-import { OverviewMap } from "ol/control";
-import TileLayer from "ol/layer/Tile";
-import { OSM } from "ol/source";
-import View from 'ol/View';
-import MapContext from "../map/MapContext";
+import { useContext, useEffect } from 'react';
+import { OverviewMap } from 'ol/control';
+import TileLayer from 'ol/layer/Tile';
+import { OSM } from 'ol/source';
+import MapContext from '../map/MapContext';
 
 const OverviewControl = () => {
     const { map } = useContext(MapContext);
@@ -13,9 +12,9 @@ const OverviewControl = () => {
         const OverviewControl = new OverviewMap({
             layers: [
                 new TileLayer({
-                  source: new OSM()
-                })
-              ],
+                    source: new OSM(),
+                }),
+            ],
         });
         map.controls.push(OverviewControl);
     }, [map]);

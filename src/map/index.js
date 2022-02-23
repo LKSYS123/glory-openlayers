@@ -1,5 +1,1 @@
-import Map from "./Map"
-
-export {
-    Map,
-} 
+export { default } from './Map';

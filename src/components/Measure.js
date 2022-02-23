@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -15,7 +16,14 @@ import { OSM, Vector as VectorSource } from 'ol/source';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { getArea, getLength } from 'ol/sphere';
 import { fromLonLat } from 'ol/proj';
-import { Attribution, defaults as defaultControls, FullScreen, MousePosition, OverviewMap, ZoomSlider } from 'ol/control';
+import {
+    Attribution,
+    defaults as defaultControls,
+    FullScreen,
+    MousePosition,
+    OverviewMap,
+    ZoomSlider,
+} from 'ol/control';
 import 'ol/ol.css';
 import { createStringXY } from 'ol/coordinate';
 
@@ -191,7 +199,9 @@ const Measure = () => {
                     if (segmentStyles.length - 1 < count) {
                         segmentStyles.push(segmentStyle.clone());
                     }
-                    const segmentPoint = new Point(segment.getCoordinateAt(0.5));
+                    const segmentPoint = new Point(
+                        segment.getCoordinateAt(0.5)
+                    );
                     segmentStyles[count].setGeometry(segmentPoint);
                     segmentStyles[count].getText().setText(label);
                     styles.push(segmentStyles[count]);
@@ -223,7 +233,10 @@ const Measure = () => {
         });
 
         const map = new Map({
-            controls: defaultControls({ zoom: true, attribution: false }).extend([
+            controls: defaultControls({
+                zoom: true,
+                attribution: false,
+            }).extend([
                 new FullScreen({}),
                 new ZoomSlider(),
                 new OverviewMap({
@@ -245,7 +258,7 @@ const Measure = () => {
 
         let draw; // global so we can remove it later
 
-        function addInteraction() {
+        function addDraw() {
             const drawType = typeSelect.value;
             const activeTip =
                 'Click to continue drawing the ' +
@@ -256,7 +269,12 @@ const Measure = () => {
                 source: source,
                 type: drawType,
                 style: function (feature) {
-                    return styleFunction(feature, showSegments.checked, drawType, tip);
+                    return styleFunction(
+                        feature,
+                        showSegments.checked,
+                        drawType,
+                        tip
+                    );
                 },
             });
             draw.on('drawstart', function () {
@@ -280,10 +298,10 @@ const Measure = () => {
 
         typeSelect.onchange = function () {
             map.removeInteraction(draw);
-            addInteraction();
+            addDraw();
         };
 
-        addInteraction();
+        addDraw();
 
         showSegments.onchange = function () {
             vector.changed();
@@ -308,23 +326,43 @@ const Measure = () => {
             mousePosition.setCoordinateFormat(format);
         });
         map.controls.push(mousePosition);
-
-    }, [])
+    }, []);
 
     return (
         <>
-            <div id="map" className='map' style={{ width: '98vw', height: '89vh' }}>
+            <div
+                id='map'
+                className='map'
+                style={{ width: '98vw', height: '89vh' }}
+            >
                 <div style={{ marginBottom: 10 }}>
                     <form style={{ position: 'absolute' }}>
-                        <label for="projection">Projection </label>
-                        <select id="projection">
-                            <option value="EPSG:4326">EPSG:4326</option>
-                            <option value="EPSG:3857">EPSG:3857</option>
+                        <label htmlFor='projection'>Projection </label>
+                        <select id='projection'>
+                            <option value='EPSG:4326'>EPSG:4326</option>
+                            <option value='EPSG:3857'>EPSG:3857</option>
                         </select>
-                        <label for="precision">Precision</label>
-                        <input id="precision" type="number" min="0" max="12" value="4" />
+                        <label htmlFor='precision'>Precision</label>
+                        <input
+                            id='precision'
+                            type='number'
+                            min='0'
+                            max='12'
+                            defaultValue='4'
+                        />
                     </form>
-                    <div id="mouse-position" style={{ position: 'absolute', zIndex: 100, width: '100%', margin: '0 auto', textAlign: 'center', fontSize: 20, fontWeight: 600 }}></div>
+                    <div
+                        id='mouse-position'
+                        style={{
+                            position: 'absolute',
+                            zIndex: 100,
+                            width: '100%',
+                            margin: '0 auto',
+                            textAlign: 'center',
+                            fontSize: 20,
+                            fontWeight: 600,
+                        }}
+                    ></div>
                 </div>
             </div>
         </>

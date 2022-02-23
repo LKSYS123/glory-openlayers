@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { ZoomSlider } from 'ol/control';
 import MapContext from '../map/MapContext';
 
@@ -9,10 +9,9 @@ const ZoomSliderControl = () => {
         if (!map) return;
         const zoomsliderControl = new ZoomSlider();
         map.controls.push(zoomsliderControl);
-    }, [map])
-    
+    }, [map]);
+
     return null;
 };
 
 export default ZoomSliderControl;
-

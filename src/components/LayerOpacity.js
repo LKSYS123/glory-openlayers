@@ -21,10 +21,11 @@ import {
     Translate,
     defaults as defaultInteractions,
 } from 'ol/interaction';
+import Slider from '@mui/material/Slider';
 
 import GeoJsonObject from './object.json';
 
-const GeoJson = () => {
+const LayerOpacity = () => {
     const [opacity1, setOpacity1] = useState(0.3);
 
     function get_random_rgb(opacity) {
@@ -249,6 +250,26 @@ const GeoJson = () => {
             >
                 <div style={{ marginBottom: 10 }}>
                     <div
+                        style={{
+                            display: 'flex',
+                            width: 400,
+                            height: 20,
+                            fontSize: 20,
+                        }}
+                    >
+                        <Slider
+                            style={{ margin: '0 20px' }}
+                            defaultValue={0.3}
+                            aria-label='Default'
+                            valueLabelDisplay='auto'
+                            step={0.01}
+                            min={0}
+                            max={1}
+                            onChange={handleSliderChange}
+                        />
+                        {opacity1}
+                    </div>
+                    <div
                         id='mouse-position'
                         style={{
                             position: 'relative',
@@ -267,4 +288,4 @@ const GeoJson = () => {
     );
 };
 
-export default GeoJson;
+export default LayerOpacity;

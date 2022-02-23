@@ -1,8 +1,8 @@
-import React, { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import Overlay from 'ol/Overlay';
 import { toLonLat } from 'ol/proj';
 import { toStringHDMS } from 'ol/coordinate';
-import MapContext from '../map/MapContext'
+import MapContext from '../map/MapContext';
 import 'ol/ol.css';
 
 const Popup = () => {
@@ -33,7 +33,6 @@ const Popup = () => {
         return false;
     };
     map.addOverlay(overlay);
-
 };
 
 export default Popup;

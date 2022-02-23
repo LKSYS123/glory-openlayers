@@ -5,18 +5,21 @@ import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import { OSM, TileWMS } from 'ol/source';
 import { createStringXY } from 'ol/coordinate';
-import { defaults as defaultControls, Attribution, MousePosition } from 'ol/control';
+import {
+    defaults as defaultControls,
+    Attribution,
+    MousePosition,
+} from 'ol/control';
 
 const WmsInfo = () => {
-
     useEffect(() => {
         const wmsSource = new TileWMS({
-            url: "http://192.168.1.59:8080/geoserver/MyFirstProject/wms",
-            params: { LAYERS: "Land", TILED: true },
-            serverType: "geoserver",
+            url: 'http://192.168.1.59:8080/geoserver/MyFirstProject/wms',
+            params: { LAYERS: 'Land', TILED: true },
+            serverType: 'geoserver',
             // Countries have transparency, so do not fade tiles:
             transition: 0,
-        })
+        });
 
         const wmsLayer = new TileLayer({
             source: wmsSource,
@@ -35,12 +38,11 @@ const WmsInfo = () => {
             controls: defaultControls({ attribution: false }).extend([
                 new Attribution({
                     collapsible: true,
-                })
+                }),
             ]),
             layers: [osmLayer, wmsLayer],
             target: 'map',
             view: view,
-
         });
 
         map.on('click', function (evt) {
@@ -54,7 +56,7 @@ const WmsInfo = () => {
                 evt.coordinate,
                 viewResolution,
                 'EPSG:3857',
-                { 'INFO_FORMAT': 'text/html', }
+                { INFO_FORMAT: 'text/html' }
             );
             if (url) {
                 fetch(url)
@@ -98,23 +100,43 @@ const WmsInfo = () => {
             mousePosition.setCoordinateFormat(format);
         });
         map.controls.push(mousePosition);
-
     }, []);
     return (
         <>
-            <div id="info" >인포인포인포인포인포인포인포인포인포인포</div>
+            <div id='info'>인포인포인포인포인포인포인포인포인포인포</div>
             <form>
-                <label for="projection">Projection </label>
-                <select id="projection">
-                    <option value="EPSG:4326">EPSG:4326</option>
-                    <option value="EPSG:3857">EPSG:3857</option>
+                <label htmlFor='projection'>Projection </label>
+                <select id='projection'>
+                    <option value='EPSG:4326'>EPSG:4326</option>
+                    <option value='EPSG:3857'>EPSG:3857</option>
                 </select>
-                <label for="precision">Precision</label>
-                <input id="precision" type="number" min="0" max="12" value="4" />
+                <label htmlFor='precision'>Precision</label>
+                <input
+                    id='precision'
+                    type='number'
+                    min='0'
+                    max='12'
+                    defaultValue='4'
+                />
             </form>
-            <div id="map" className='map' style={{ width: '98vw', height: '89vh' }}>
+            <div
+                id='map'
+                className='map'
+                style={{ width: '98vw', height: '89vh' }}
+            >
                 <div style={{ marginBottom: 10 }}>
-                    <div id="mouse-position" style={{ position: 'absolute', zIndex: 100, width: '100%', margin: '0 auto', textAlign: 'center', fontSize: 20, fontWeight: 600 }}></div>
+                    <div
+                        id='mouse-position'
+                        style={{
+                            position: 'absolute',
+                            zIndex: 100,
+                            width: '100%',
+                            margin: '0 auto',
+                            textAlign: 'center',
+                            fontSize: 20,
+                            fontWeight: 600,
+                        }}
+                    ></div>
                 </div>
             </div>
         </>
