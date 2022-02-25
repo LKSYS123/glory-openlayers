@@ -7,6 +7,7 @@ import {
     LayerSelect,
     Measure,
     Merge,
+    MousePolygon,
     SplitPolygon,
     StreetLabels,
     VectorInfo,
@@ -33,20 +34,25 @@ function App() {
                 <Link to='/splitPolygon'>폴리곤 드래그 생성</Link>
                 <Link to='/layerOpacity'>레이어 투명도</Link>
                 <Link to='/layerSelect'>레이어별 Select</Link>
+                <Link to='/mousePolygon'>마우스로 폴리곤생성</Link>
+                <hr />
             </div>
-            <Map>
-                <Route path='/basicMap' component={BasicMap} />
-                <Route path='/streetLabels' component={StreetLabels} />
-                <Route path='/measure' component={Measure} />
-                <Route path='/geoJson' component={GeoJson} />
-                <Route path='/wmsInfo' component={WMSInfo} />
-                <Route path='/wmsSample' component={WMSSample} />
-                <Route path='/vectorInfo' component={VectorInfo} />
-                <Route path='/merge' component={Merge} />
-                <Route path='/splitPolygon' component={SplitPolygon} />
-                <Route path='/layerOpacity' component={LayerOpacity} />
-                <Route path='/layerSelect' component={LayerSelect} />
-            </Map>
+            <div style={{ width: '90vw', height: '75vh' }}>
+                <Map>
+                    <Route path='/basicMap' component={BasicMap} />
+                    <Route path='/streetLabels' component={StreetLabels} />
+                    <Route path='/measure' component={Measure} />
+                    <Route path='/geoJson' component={GeoJson} />
+                    <Route path='/wmsInfo' component={WMSInfo} />
+                    <Route path='/wmsSample' component={WMSSample} />
+                    <Route path='/vectorInfo' component={VectorInfo} />
+                    <Route path='/merge' component={Merge} />
+                    <Route path='/splitPolygon' component={SplitPolygon} />
+                    <Route path='/layerOpacity' component={LayerOpacity} />
+                    <Route path='/layerSelect' component={LayerSelect} />
+                    <Route path='/mousePolygon' component={MousePolygon} />
+                </Map>
+            </div>
         </>
     );
 }

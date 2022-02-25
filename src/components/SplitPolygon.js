@@ -6,21 +6,9 @@ import { Vector as VectorLayer, Tile as TileLayer } from 'ol/layer';
 import { Fill, Stroke, Style, Text } from 'ol/style';
 import { Draw } from 'ol/interaction';
 import { createBox } from 'ol/interaction/Draw';
-import { fromLonLat } from 'ol/proj';
+
 import { OSM } from 'ol/source';
-import {
-    bbox,
-    booleanPointInPolygon,
-    randomPoint,
-    clustersKmeans,
-    point,
-    voronoi,
-    area,
-    intersect,
-    featureCollection,
-    polygon,
-} from '@turf/turf';
-import squareGrid from '@turf/square-grid';
+import { bbox } from '@turf/turf';
 import rectangleGrid from '@turf/rectangle-grid';
 
 import { MousePosition } from 'ol/control';
@@ -64,6 +52,10 @@ const SplitPolygon = () => {
             }),
             fill: new Fill({
                 color: 'rgba(9, 42, 56, 0.3)',
+            }),
+            text: new Text({
+                font: '20px sans-serif',
+                text: feature.ol_uid,
             }),
         });
 
@@ -142,9 +134,22 @@ const SplitPolygon = () => {
 
         const dividedPolygonFeatures = polygonDivide(e.feature);
 
-        console.log('dividedPolygonFeatures', dividedPolygonFeatures);
-
+        console.log('Features Features Features', dividedPolygonFeatures);
         vectorLayer.getSource().addFeatures(dividedPolygonFeatures);
+
+        // for (var i = 0; i < 5; i++) {
+        //     console.log('iiiii', i);
+        //     vectorLayer.getSource().removeFeature(dividedPolygonFeatures[i]);
+        // }
+
+        // for (
+        //     var i = dividedPolygonFeatures.length - 1;
+        //     i > dividedPolygonFeatures.length - 10;
+        //     i--
+        // ) {
+        //     console.log('iiiii', i);
+        //     vectorLayer.getSource().removeFeature(dividedPolygonFeatures[i]);
+        // }
 
         map.removeInteraction(draw);
     }
@@ -152,14 +157,14 @@ const SplitPolygon = () => {
     // function polygonDivide(polygonFeature, nDivisions, colors) {
     function polygonDivide(polygonFeature) {
         const polygon = formatGeoJSON.writeFeatureObject(polygonFeature, {
-            dataProjection: 'EPSG:4326',
-            featureProjection: 'EPSG:4326',
+            dataProjection: 'EPSG:3857',
+            featureProjection: 'EPSG:3857',
         });
         const polygonBbox = bbox(polygon);
 
         console.log('polygonBbox', polygonBbox);
 
-        var cellWidth = 1000;
+        var cellWidth = 500;
         var cellHeight = 1000;
         var options = { units: 'kilometers' };
 
@@ -172,13 +177,14 @@ const SplitPolygon = () => {
 
         // var poly = squareGrid(polygonBbox, 1000, options);
         // console.log('pppoly', poly, options);
-        console.log('');
 
         const dividedPolygonFeatures = new GeoJSON().readFeatures(
             // poly
             rectangleGridSample,
-            { dataProjection: 'EPSG:4326', featureProjection: 'EPSG:4326' }
+            { dataProjection: 'EPSG:3857', featureProjection: 'EPSG:3857' }
         );
+
+        console.log('qqqqqqqqqqqqqqqqqqqq', rectangleGridSample);
 
         return dividedPolygonFeatures;
     }

@@ -4,11 +4,10 @@ import ImageWMS from 'ol/source/ImageWMS';
 import Map from 'ol/Map';
 import View from 'ol/View';
 
-
 const WMSSample = () => {
     const wmsSource = new ImageWMS({
         url: 'https://ahocevar.com/geoserver/wms',
-        params: { 'LAYERS': 'ne:ne' },
+        params: { LAYERS: 'ne:ne' },
         serverType: 'geoserver',
         // crossOrigin: 'anonymous',
     });
@@ -24,7 +23,7 @@ const WMSSample = () => {
 
     const map = new Map({
         layers: [wmsLayer],
-        target: 'map',
+        target: 'map1',
         view: view,
     });
 
@@ -35,7 +34,7 @@ const WMSSample = () => {
             evt.coordinate,
             viewResolution,
             'EPSG:3857',
-            { 'INFO_FORMAT': 'text/html' }
+            { INFO_FORMAT: 'text/html' }
         );
         if (url) {
             fetch(url)
@@ -59,8 +58,8 @@ const WMSSample = () => {
 
     return (
         <>
-            <div id='map' style={{ width: '98vw', height: '98vh' }}>
-                <div id="info">&nbsp;</div>
+            <div id='map1' style={{ width: '98vw', height: '98vh' }}>
+                <div id='info'>&nbsp;</div>
             </div>
         </>
     );

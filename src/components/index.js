@@ -1,9 +1,10 @@
 import BasicMap from './BasicMap';
 import GeoJson from './GeoJson';
 import LayerOpacity from './LayerOpacity';
+import LayerSelect from './LayerSelect';
 import Measure from './Measure';
 import Merge from './Merge';
-import LayerSelect from './LayerSelect';
+import MousePolygon from './MousePolygon';
 import SplitPolygon from './SplitPolygon';
 import StreetLabels from './StreetLabels';
 import VectorInfo from './VectorInfo';
@@ -17,6 +18,7 @@ export {
     LayerSelect,
     Measure,
     Merge,
+    MousePolygon,
     SplitPolygon,
     StreetLabels,
     VectorInfo,

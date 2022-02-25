@@ -34,7 +34,6 @@ const Map = ({ children, interactions }) => {
     var bbox = [14120000, 4509000, 14130000, 4514000];
     var options = { units: 'kilometers' };
     var poly = squareGrid(bbox, 1000, options);
-    console.log('pppooly', poly, options);
 
     var vectorSourcePolygons = new VectorSource({
         features: new GeoJSON().readFeatures(poly),
