@@ -1,4 +1,5 @@
 import BasicMap from './BasicMap';
+import FeatureCRUD from './FeatureCRUD';
 import GeoJson from './GeoJson';
 import LayerOpacity from './LayerOpacity';
 import LayerSelect from './LayerSelect';
@@ -13,6 +14,7 @@ import WMSSample from './WMSSample';
 
 export {
     BasicMap,
+    FeatureCRUD,
     GeoJson,
     LayerOpacity,
     LayerSelect,

@@ -23,14 +23,15 @@ const VectorInfo = () => {
         const vectorSource = new VectorSource({
             format: new GeoJSON(),
             url: function (extent) {
-                return (
-                    'http://192.168.1.59:8080/geoserver/MyFirstProject/ows?service=WFS&' +
-                    'version=1.0.0&request=GetFeature&typeName=MyFirstProject%' +
-                    '3ALand&maxFeatures=50&outputFormat=application%2Fjson&srsname=EPSG:3857&' +
-                    'bbox=' +
-                    extent.join(',') +
-                    ',EPSG:3857'
-                );
+                return `http://192.168.1.59:8080/geoserver/all_Tml_blk_StoreName/ows?service=WFS&version=1.0.0
+                    &request=GetFeature&typeName=all_Tml_blk_StoreName%3AAll_Tml_Blk_View_SQL&maxFeatures=10000
+                    &outputFormat=application%2Fjson&viewparams=tml_cd_bl:ICO`;
+                // 'http://192.168.1.59:8080/geoserver/MyFirstProject/ows?service=WFS&' +
+                // 'version=1.0.0&request=GetFeature&typeName=MyFirstProject%' +
+                // '3ALand&maxFeatures=50&outputFormat=application%2Fjson&srsname=EPSG:3857&' +
+                // 'bbox=' +
+                // extent.join(',') +
+                // ',EPSG:3857'
             },
             strategy: bboxStrategy,
         });

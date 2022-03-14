@@ -162,6 +162,7 @@ const GeoJson = () => {
     const translate = new Translate({
         features: select.getFeatures(),
     });
+
     let opacityValue;
     const handleSliderChange = (event, newValue) => {
         opacityValue = newValue;

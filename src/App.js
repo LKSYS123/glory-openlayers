@@ -2,6 +2,7 @@ import { Route, Link } from 'react-router-dom';
 
 import {
     BasicMap,
+    FeatureCRUD,
     GeoJson,
     LayerOpacity,
     LayerSelect,
@@ -35,6 +36,8 @@ function App() {
                 <Link to='/layerOpacity'>레이어 투명도</Link>
                 <Link to='/layerSelect'>레이어별 Select</Link>
                 <Link to='/mousePolygon'>마우스로 폴리곤생성</Link>
+                <br />
+                <Link to='/featureCRUD'>도형 CRUD</Link>
                 <hr />
             </div>
             <div style={{ width: '90vw', height: '75vh' }}>
@@ -51,6 +54,7 @@ function App() {
                     <Route path='/layerOpacity' component={LayerOpacity} />
                     <Route path='/layerSelect' component={LayerSelect} />
                     <Route path='/mousePolygon' component={MousePolygon} />
+                    <Route path='/featureCRUD' component={FeatureCRUD} />
                 </Map>
             </div>
         </>

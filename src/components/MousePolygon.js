@@ -20,6 +20,7 @@ import {
 import { shiftKeyOnly } from 'ol/events/condition';
 import { polygon } from '@turf/turf';
 import { Fill, Stroke, Style, Text } from 'ol/style';
+import Axios from 'axios';
 
 const MousePolygon = () => {
     const osmLayer = new TileLayer({
@@ -64,6 +65,20 @@ const MousePolygon = () => {
     /*==========================마우스 드래그해서 도형 생성==========================================*/
     dragBox.on('boxend', (e) => {
         console.log('eeeeeeeeee', e);
+        console.log('dragBox dragBox', dragBox);
+        console.log(
+            'dragBox coordinate',
+            dragBox.box_.geometry_.flatCoordinates
+        );
+
+        Axios.post('http://192.168.1.13:4000/api/addPolygon', {
+            headers: {
+                Accept: 'application/json',
+            },
+            title: 'Polygon',
+            body: dragBox.box_.geometry_.flatCoordinates,
+        }).then((request) => console.log('request request', request));
+
         const dragcoordinate = dragBox.getGeometry().getCoordinates();
         const dragPolygon = polygon([dragcoordinate[0]]);
         const dragLayer = new VectorLayer({

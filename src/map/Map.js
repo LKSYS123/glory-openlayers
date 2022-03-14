@@ -4,16 +4,13 @@ import { Attribution, defaults as defaultControls } from 'ol/control';
 import { Tile as TileLayer } from 'ol/layer';
 import { fromLonLat } from 'ol/proj';
 import { OSM } from 'ol/source';
-import {
-    Select,
-    Translate,
-    defaults as defaultInteractions,
-} from 'ol/interaction';
+import { defaults as defaultInteractions } from 'ol/interaction';
 import { Stroke, Style, Fill } from 'ol/style';
 import { Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer } from 'ol/layer';
 import squareGrid from '@turf/square-grid';
 import GeoJSON from 'ol/format/GeoJSON';
+import { bbox as bboxStrategy } from 'ol/loadingstrategy';
 
 import MapContext from './MapContext';
 import {
@@ -39,8 +36,25 @@ const Map = ({ children, interactions }) => {
         features: new GeoJSON().readFeatures(poly),
     });
 
+    const vectorSource = new VectorSource({
+        format: new GeoJSON(),
+        url: function (extent) {
+            var srcUrl =
+                'http://192.168.1.47:8088/geoserver/GloryGis/ows?service=WFS&version=1.0.0&request=GetFeature&' +
+                'typeName=GloryGis%3Atl_emd._seoul_4326&maxFeatures=100&outputFormat=application/json';
+            return srcUrl;
+            // 'http://192.168.1.59:8080/geoserver/MyFirstProject/ows?service=WFS&' +
+            // 'version=1.0.0&request=GetFeature&typeName=MyFirstProject%' +
+            // '3ALand&maxFeatures=50&outputFormat=application%2Fjson&srsname=EPSG:3857&' +
+            // 'bbox=' +
+            // extent.join(',') +
+            // ',EPSG:3857'
+        },
+        strategy: bboxStrategy,
+    });
+
     var vectorLayerPolygons = new VectorLayer({
-        source: vectorSourcePolygons,
+        source: vectorSource,
         style: [
             new Style({
                 stroke: new Stroke({
@@ -48,22 +62,22 @@ const Map = ({ children, interactions }) => {
                     width: 3,
                 }),
                 fill: new Fill({
-                    color: 'rgba(9, 42, 56, 1)',
+                    color: 'rgba(9, 42, 56, 0.3)',
                 }),
             }),
         ],
     });
 
-    const select = new Select();
+    // const select = new Select();
 
-    const translate = new Translate({
-        features: select.getFeatures(),
-    });
+    // const translate = new Translate({
+    //     features: select.getFeatures(),
+    // });
 
     useEffect(() => {
         // Map 객체 생성 및 OSM 배경지도 추가
         const map = new OlMap({
-            interactions: defaultInteractions().extend([select, translate]),
+            interactions: defaultInteractions().extend([]),
             controls: defaultControls({ attribution: false }).extend([
                 attribution,
             ]),
@@ -76,7 +90,7 @@ const Map = ({ children, interactions }) => {
             target: 'map', // 하위 요소 중 id 가 map 인 element가 있어야함.
             view: new View({
                 center: fromLonLat([126.88649, 37.515881]),
-                zoom: 13,
+                zoom: 12,
                 rotation: Math.PI / 180,
             }),
         });
@@ -105,7 +119,6 @@ const Map = ({ children, interactions }) => {
             nowDegree = nowDegree.toFixed(2);
             console.log('rorororororo', nowDegree);
         });
-
         setMapObj({ map });
         return () => map.setTarget(undefined);
     }, []);

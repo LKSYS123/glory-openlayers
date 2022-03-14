@@ -5,7 +5,6 @@ import 'ol/ol.css';
 
 function BasicMap() {
     const { map } = useContext(MapContext);
-    console.log('acacacacacacac', map);
 
     return (
         <>

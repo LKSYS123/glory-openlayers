@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^12.1.10",
     "@turf/rectangle-grid": "^6.5.0",
     "@turf/turf": "^6.5.0",
+    "axios": "^0.26.0",
     "babel-loader": "8.1.0",
     "jsts": "^2.7.1",
     "leaflet": "^1.7.1",

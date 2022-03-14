@@ -19,3 +19,7 @@
 #### 8) 레이어 투명도(LayerOpacity): Slider를 이용하여 Polygon의 투명도 조정
 
 #### 9) 레이어별 Select(LayerSelect): Layer선택 후 해당 Layer만 Click 가능
+
+#### 10) 화면 회전후 도형생성(MousePolygon): 화면 회전후 현재 화면에 맞는 도형 생성, 도형이 회전되어 있지 않음
+
+#### 11) 도형 CRUD(FeatureCRUD): WFS-T 이용하여 도형 CRUD(현재 중단.22.03.14)

@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import View from 'ol/View';
+import Feature from 'ol/Feature';
 import {
     Attribution,
     defaults as defaultControls,
@@ -18,6 +19,7 @@ import {
     Select,
     Translate,
     defaults as defaultInteractions,
+    Draw,
 } from 'ol/interaction';
 
 import Radio from '@mui/material/Radio';
@@ -27,6 +29,7 @@ import FormControl from '@mui/material/FormControl';
 
 import GeoJsonObject from './object.json';
 import { createStringXY } from 'ol/coordinate';
+import { Polygon } from 'ol/geom';
 
 // import VectorLayer from '../layers/VectorLayer';
 // import Layers from '../layers/Layers';
@@ -74,7 +77,7 @@ const SelectLayer = () => {
             }),
             // 내부 색상
             fill: new Fill({
-                color: 'rgba(184, 33, 11, 1)',
+                color: 'rgba(0, 255, 255, 1)',
             }),
         }),
         glory5: new Style({
@@ -85,7 +88,7 @@ const SelectLayer = () => {
             }),
             // 내부 색상
             fill: new Fill({
-                color: 'rgba(93, 157, 11, 1)',
+                color: 'red',
             }),
         }),
     };
@@ -98,37 +101,48 @@ const SelectLayer = () => {
         source: new OSM(),
     });
 
+    const vectorSource1 = new VectorSource({
+        features: new GeoJSON().readFeatures(GeoJsonObject.sampleObject1),
+    });
+    const vectorSource2 = new VectorSource({
+        features: new GeoJSON().readFeatures(GeoJsonObject.sampleObject2),
+    });
+    const vectorSource3 = new VectorSource({
+        features: new GeoJSON().readFeatures(GeoJsonObject.sampleObject3),
+    });
+    const vectorSource4 = new VectorSource({
+        features: new GeoJSON().readFeatures(GeoJsonObject.sampleObject4),
+    });
+
+    //
     const vectorLayer1 = new VectorLayer({
-        source: new VectorSource({
-            features: new GeoJSON().readFeatures(GeoJsonObject.sampleObject1),
-        }),
+        source: vectorSource1,
         style: styleFunction,
     });
 
     const vectorLayer2 = new VectorLayer({
-        source: new VectorSource({
-            features: new GeoJSON().readFeatures(GeoJsonObject.sampleObject2),
-        }),
+        source: vectorSource2,
         style: styleFunction,
     });
 
     const vectorLayer3 = new VectorLayer({
-        source: new VectorSource({
-            features: new GeoJSON().readFeatures(GeoJsonObject.sampleObject3),
-        }),
+        source: vectorSource3,
         style: styleFunction,
     });
 
     const vectorLayer4 = new VectorLayer({
-        source: new VectorSource({
-            features: new GeoJSON().readFeatures(GeoJsonObject.sampleObject4),
-        }),
+        source: vectorSource4,
         style: styleFunction,
     });
 
+    /*================= 레이어 선택 Interaction =================*/
     const selectedLayer1 = new Select({
         layers: [vectorLayer1],
         style: new Style({
+            stroke: new Stroke({
+                color: 'black',
+                width: 2,
+            }),
             fill: new Fill({
                 color: 'green',
             }),
@@ -137,6 +151,10 @@ const SelectLayer = () => {
     const selectedLayer2 = new Select({
         layers: [vectorLayer2],
         style: new Style({
+            stroke: new Stroke({
+                color: 'black',
+                width: 2,
+            }),
             fill: new Fill({
                 color: 'yellow',
             }),
@@ -145,6 +163,10 @@ const SelectLayer = () => {
     const selectedLayer3 = new Select({
         layers: [vectorLayer3],
         style: new Style({
+            stroke: new Stroke({
+                color: 'black',
+                width: 2,
+            }),
             fill: new Fill({
                 color: 'purple',
             }),
@@ -153,39 +175,81 @@ const SelectLayer = () => {
     const selectedLayer4 = new Select({
         layers: [vectorLayer4],
         style: new Style({
+            stroke: new Stroke({
+                color: 'black',
+                width: 2,
+            }),
             fill: new Fill({
                 color: 'orange',
             }),
         }),
     });
 
+    /*====================선택한 도형 이동 가능========================*/
     let selectLayer = new Select({});
-
+    let translate = new Translate();
     function translateFunction(selectLayer) {
-        let translate = new Translate({
+        translate = new Translate({
             features: selectLayer.getFeatures(),
         });
         return translate;
     }
 
+    /*=================== 레이어 선택시 정보변경===================*/
+    let vectorSource;
+    let style;
+
+    // 레이어 선택 함수
     function layerChange(event) {
+        console.log(map.getInteractions());
+        map.removeInteraction(draw);
         map.removeInteraction(selectLayer);
-        map.removeInteraction(translateFunction(selectLayer));
+        map.removeInteraction(translate);
 
         if (event.target.value === 'vectorLayer1') {
             selectLayer = selectedLayer1;
+            vectorSource = vectorSource1;
+            style = styles.glory1;
         } else if (event.target.value === 'vectorLayer2') {
             selectLayer = selectedLayer2;
+            vectorSource = vectorSource2;
+            style = styles.glory2;
         } else if (event.target.value === 'vectorLayer3') {
             selectLayer = selectedLayer3;
-        } else {
+            vectorSource = vectorSource3;
+            style = styles.glory3;
+        } else if (event.target.value === 'vectorLayer4') {
             selectLayer = selectedLayer4;
+            vectorSource = vectorSource4;
+            style = styles.glory4;
+        } else {
+            return;
         }
 
-        map.addInteraction(translateFunction(selectLayer));
         map.addInteraction(selectLayer);
+        map.addInteraction(translateFunction(selectLayer));
+        map.addInteraction(draw);
 
-        return selectLayer;
+        return [vectorSource, selectLayer];
+    }
+
+    const draw = new Draw({
+        type: 'Polygon',
+        source: vectorSource,
+    });
+
+    draw.on('drawend', drawEnd);
+
+    function drawEnd(e) {
+        draw.sketchCoords_[0].push(draw.sketchCoords_[0][0]);
+        const drawFeature = new Feature({
+            name: 'gloryPolygon',
+            geometry: new Polygon(draw.sketchCoords_),
+        });
+
+        drawFeature.setStyle(style);
+
+        vectorSource.addFeature(drawFeature);
     }
 
     const map = new Map({
