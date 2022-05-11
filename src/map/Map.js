@@ -11,7 +11,6 @@ import { Vector as VectorLayer } from 'ol/layer';
 import squareGrid from '@turf/square-grid';
 import GeoJSON from 'ol/format/GeoJSON';
 import { bbox as bboxStrategy } from 'ol/loadingstrategy';
-
 import MapContext from './MapContext';
 import {
     FullScreenControl,
@@ -50,6 +49,39 @@ const Map = ({ children, interactions }) => {
             // extent.join(',') +
             // ',EPSG:3857'
         },
+        // loader: function (extent, resolution, projection, success, failure) {
+        //     var proj = projection.getCode();
+        //     var url =
+        //         'http://192.168.1.59:3100/api/get_t_strmasterLayer?tstrm_loc=KRBSN&tstrm_code=KWTST&tstrm_kind=OTL&tstrm_codeinter=&outputFormat=application/json';
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open('GET', url);
+        //     console.log('xhrOpen xhrOpen xhrOpen xhrOpen');
+        //     // xhr.setRequestHeader('Content-Type', 'application/json');
+        //     // xhr.setRequestHeader('Access-Control-Allow-Origin', 'Vary');
+        //     var onError = function () {
+        //         vectorSource.removeLoadedExtent(extent);
+        //         failure();
+        //     };
+        //     xhr.onerror = onError;
+        //     xhr.onload = function () {
+        //         if (xhr.status === 200) {
+        //             console.log('response', xhr.response);
+        //             // var features = vectorSource
+        //             //     .getFormat()
+        //             //     .readFeatures(xhr.responseText);
+        //             // vectorSource.addFeatures(features);
+        //             console.log('xhr xhr xhr xhr', xhr.onload.prototype);
+        //             // console.log('xhr.responseText==>', xhr.responseText);
+        //             // console.log('features==>', features);
+
+        //             // success(features);
+        //         } else {
+        //             console.log('xhrError xhrError xhrError xhrError');
+        //             onError();
+        //         }
+        //     };
+        //     xhr.send();
+        // },
         strategy: bboxStrategy,
     });
 
@@ -89,7 +121,7 @@ const Map = ({ children, interactions }) => {
             ],
             target: 'map', // 하위 요소 중 id 가 map 인 element가 있어야함.
             view: new View({
-                center: fromLonLat([126.88649, 37.515881]),
+                center: fromLonLat([126.91, 37.515881]),
                 zoom: 12,
                 rotation: Math.PI / 180,
             }),
@@ -128,7 +160,7 @@ const Map = ({ children, interactions }) => {
         <MapContext.Provider value={mapObj}>
             {children}
             <FullScreenControl />
-            <MousePositionControl />
+            {/* <MousePositionControl /> */}
             <ZoomSliderControl />
             <RotationControl />
         </MapContext.Provider>

@@ -151,6 +151,8 @@ const Measure = () => {
             } else {
                 output = Math.round(length * 100) / 100 + ' m';
             }
+            console.log('length length', length);
+            console.log('output output', output);
             return output;
         };
 
@@ -190,6 +192,14 @@ const Measure = () => {
                     label = formatLength(geometry);
                     line = geometry;
                 }
+                console.log(
+                    'geometry.getLastCoordinate()',
+                    geometry.getLastCoordinate()
+                );
+                console.log(typeof geometry);
+                console.log('geometry geometry', geometry);
+                console.log('point point point', point);
+                console.log('line line line', line);
             }
             if (segments && line) {
                 let count = 0;
@@ -309,7 +319,7 @@ const Measure = () => {
         };
 
         const mousePosition = new MousePosition({
-            coordinateFormat: createStringXY(4),
+            coordinateFormat: createStringXY(6),
             projection: 'EPSG:3857',
             className: 'custom-mouse-position',
             target: document.getElementById('mouse-position'),

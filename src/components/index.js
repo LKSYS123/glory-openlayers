@@ -7,10 +7,12 @@ import Measure from './Measure';
 import Merge from './Merge';
 import MousePolygon from './MousePolygon';
 import SplitPolygon from './SplitPolygon';
+import SplitPolygonStyle from './SplitPolygonStyle';
 import StreetLabels from './StreetLabels';
 import VectorInfo from './VectorInfo';
 import WMSInfo from './WMSInfo';
 import WMSSample from './WMSSample';
+import Marker from './Marker';
 
 export {
     BasicMap,
@@ -22,8 +24,10 @@ export {
     Merge,
     MousePolygon,
     SplitPolygon,
+    SplitPolygonStyle,
     StreetLabels,
     VectorInfo,
     WMSInfo,
     WMSSample,
+    Marker,
 };

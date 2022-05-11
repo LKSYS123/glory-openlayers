@@ -2,7 +2,6 @@ import { Route, Link } from 'react-router-dom';
 
 import {
     BasicMap,
-    FeatureCRUD,
     GeoJson,
     LayerOpacity,
     LayerSelect,
@@ -10,10 +9,12 @@ import {
     Merge,
     MousePolygon,
     SplitPolygon,
+    SplitPolygonStyle,
     StreetLabels,
     VectorInfo,
     WMSInfo,
     WMSSample,
+    Marker,
 } from './components';
 
 import Map from './map';
@@ -33,14 +34,15 @@ function App() {
                 <Link to='/vectorInfo'>Vector 이미지</Link>
                 <Link to='/merge'>폴리곤 병합</Link>
                 <Link to='/splitPolygon'>폴리곤 드래그 생성</Link>
+                <Link to='/splitPolygonStyle'>폴리곤 드래그 스타일</Link>
                 <Link to='/layerOpacity'>레이어 투명도</Link>
                 <Link to='/layerSelect'>레이어별 Select</Link>
-                <Link to='/mousePolygon'>마우스로 폴리곤생성</Link>
+                <Link to='/mousePolygon'>마우스로 폴리곤생성(가운데 구멍)</Link>
                 <br />
-                <Link to='/featureCRUD'>도형 CRUD</Link>
+                <Link to='/marker'>Marker</Link>
                 <hr />
             </div>
-            <div style={{ width: '90vw', height: '75vh' }}>
+            <div style={{ width: '90vw', height: '75vh', marginLeft: 30 }}>
                 <Map>
                     <Route path='/basicMap' component={BasicMap} />
                     <Route path='/streetLabels' component={StreetLabels} />
@@ -51,10 +53,14 @@ function App() {
                     <Route path='/vectorInfo' component={VectorInfo} />
                     <Route path='/merge' component={Merge} />
                     <Route path='/splitPolygon' component={SplitPolygon} />
+                    <Route
+                        path='/splitPolygonStyle'
+                        component={SplitPolygonStyle}
+                    />
                     <Route path='/layerOpacity' component={LayerOpacity} />
                     <Route path='/layerSelect' component={LayerSelect} />
                     <Route path='/mousePolygon' component={MousePolygon} />
-                    <Route path='/featureCRUD' component={FeatureCRUD} />
+                    <Route path='/marker' component={Marker} />
                 </Map>
             </div>
         </>

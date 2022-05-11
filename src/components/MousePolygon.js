@@ -17,10 +17,11 @@ import {
     MousePosition,
     ZoomSlider,
 } from 'ol/control';
-import { shiftKeyOnly } from 'ol/events/condition';
-import { polygon } from '@turf/turf';
 import { Fill, Stroke, Style, Text } from 'ol/style';
-import Axios from 'axios';
+import { shiftKeyOnly } from 'ol/events/condition';
+
+import { polygon } from '@turf/turf';
+import mask from '@turf/mask';
 
 const MousePolygon = () => {
     const osmLayer = new TileLayer({
@@ -64,26 +65,35 @@ const MousePolygon = () => {
 
     /*==========================마우스 드래그해서 도형 생성==========================================*/
     dragBox.on('boxend', (e) => {
-        console.log('eeeeeeeeee', e);
         console.log('dragBox dragBox', dragBox);
         console.log(
             'dragBox coordinate',
             dragBox.box_.geometry_.flatCoordinates
         );
 
-        Axios.post('http://192.168.1.13:4000/api/addPolygon', {
-            headers: {
-                Accept: 'application/json',
-            },
-            title: 'Polygon',
-            body: dragBox.box_.geometry_.flatCoordinates,
-        }).then((request) => console.log('request request', request));
+        // Axios.post('http://192.168.1.13:4000/api/addPolygon', {
+        //     headers: {
+        //         Accept: 'application/json',
+        //     },
+        //     title: 'Polygon',
+        //     body: dragBox.box_.geometry_.flatCoordinates,
+        // }).then((request) => console.log('request request', request));
 
-        const dragcoordinate = dragBox.getGeometry().getCoordinates();
-        const dragPolygon = polygon([dragcoordinate[0]]);
+        const dragCoordinate = dragBox.getGeometry().getCoordinates();
+        const dragPolygon = polygon([dragCoordinate[0]]);
+        const gloryMask = polygon([
+            [
+                [126.887, 37.5193],
+                [126.888, 37.5192],
+                [126.88786, 37.51825],
+                [126.8868, 37.51842],
+                [126.887, 37.5193],
+            ],
+        ]);
+        const masked = mask(gloryMask, dragPolygon);
         const dragLayer = new VectorLayer({
             source: new VectorSource({
-                features: new GeoJSON().readFeatures(dragPolygon),
+                features: new GeoJSON().readFeatures(masked),
             }),
             style: new Style({
                 stroke: new Stroke({
@@ -121,7 +131,7 @@ const MousePolygon = () => {
     map.controls.push(mousePosition);
     return (
         <>
-            <div id='map1' style={{ width: '95vw', height: '85vh' }}></div>
+            <div id='map1' style={{ width: '95vw', height: '83vh' }}></div>
         </>
     );
 };

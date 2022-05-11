@@ -8,22 +8,22 @@ const MousePositionControl = () => {
     useEffect(() => {
         if (!map) return;
         const mousePosition = new MousePosition({
-            coordinateFormat: createStringXY(5),
+            coordinateFormat: createStringXY(4),
             projection: 'EPSG:4326',
             className: 'custom-mouse-position',
             target: document.getElementById('mouse-position'),
         });
 
-        // const projectionSelect = document.getElementById('projection');
-        // projectionSelect.addEventListener('change', function (event) {
-        //     mousePosition.setProjection(event.target.value);
-        // });
+        const projectionSelect = document.getElementById('projection');
+        projectionSelect.addEventListener('change', function (event) {
+            mousePosition.setProjection(event.target.value);
+        });
 
-        // const precisionInput = document.getElementById('precision');
-        // precisionInput.addEventListener('change', function (event) {
-        //     const format = createStringXY(event.target.valueAsNumber);
-        //     mousePosition.setCoordinateFormat(format);
-        // });
+        const precisionInput = document.getElementById('precision');
+        precisionInput.addEventListener('change', function (event) {
+            const format = createStringXY(event.target.valueAsNumber);
+            mousePosition.setCoordinateFormat(format);
+        });
         map.controls.push(mousePosition);
     }, [map]);
 

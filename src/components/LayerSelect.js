@@ -14,7 +14,7 @@ import {
 } from 'ol/control';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Vector as VectorLayer, Tile as TileLayer } from 'ol/layer';
-import { Fill, Stroke, Style } from 'ol/style';
+import { Fill, Stroke, Style, Text } from 'ol/style';
 import {
     Select,
     Translate,
@@ -46,6 +46,10 @@ const SelectLayer = () => {
             fill: new Fill({
                 color: 'red',
             }),
+            text: new Text({
+                text: 'VectorLayer1',
+                font: '20px sans-serif',
+            }),
         }),
         glory2: new Style({
             // 테두리
@@ -57,6 +61,10 @@ const SelectLayer = () => {
             fill: new Fill({
                 color: 'rgba(7, 1, 255, 1)',
             }),
+            text: new Text({
+                text: 'VectorLayer2',
+                font: '20px sans-serif',
+            }),
         }),
         glory3: new Style({
             // 테두리
@@ -66,7 +74,11 @@ const SelectLayer = () => {
             }),
             // 내부 색상
             fill: new Fill({
-                color: 'rgba(18, 2, 12, 1)',
+                color: 'rgba(111, 222, 12, 1)',
+            }),
+            text: new Text({
+                text: 'VectorLayer3',
+                font: '20px sans-serif',
             }),
         }),
         glory4: new Style({
@@ -78,6 +90,10 @@ const SelectLayer = () => {
             // 내부 색상
             fill: new Fill({
                 color: 'rgba(0, 255, 255, 1)',
+            }),
+            text: new Text({
+                text: 'VectorLayer4',
+                font: '20px sans-serif',
             }),
         }),
         glory5: new Style({
@@ -146,6 +162,10 @@ const SelectLayer = () => {
             fill: new Fill({
                 color: 'green',
             }),
+            text: new Text({
+                text: 'VectorLayer1',
+                font: '20px sans-serif',
+            }),
         }),
     });
     const selectedLayer2 = new Select({
@@ -157,6 +177,10 @@ const SelectLayer = () => {
             }),
             fill: new Fill({
                 color: 'yellow',
+            }),
+            text: new Text({
+                text: 'VectorLayer2',
+                font: '20px sans-serif',
             }),
         }),
     });
@@ -170,6 +194,10 @@ const SelectLayer = () => {
             fill: new Fill({
                 color: 'purple',
             }),
+            text: new Text({
+                text: 'VectorLayer3',
+                font: '20px sans-serif',
+            }),
         }),
     });
     const selectedLayer4 = new Select({
@@ -181,6 +209,10 @@ const SelectLayer = () => {
             }),
             fill: new Fill({
                 color: 'orange',
+            }),
+            text: new Text({
+                text: 'VectorLayer4',
+                font: '20px sans-serif',
             }),
         }),
     });

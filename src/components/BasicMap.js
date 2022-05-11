@@ -26,7 +26,7 @@ function BasicMap() {
             <div
                 id='map'
                 className='map'
-                style={{ width: '98vw', height: '84vh' }}
+                style={{ width: '98vw', height: '78vh' }}
             >
                 <div style={{ marginBottom: 10 }}>
                     <div
