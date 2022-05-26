@@ -1,13 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import GeoJSON from 'ol/format/GeoJSON';
 import { Feature, Map as OlMap, View } from 'ol';
-import {
-    getTopRight,
-    getTopLeft,
-    getBottomLeft,
-    getBottomRight,
-    getWidth,
-} from 'ol/extent';
 import { Vector as VectorSource, OSM } from 'ol/source';
 import { Vector as VectorLayer, Tile as TileLayer } from 'ol/layer';
 import { Fill, Stroke, Style, Text, Icon } from 'ol/style';
@@ -49,6 +42,7 @@ import rectangleGrid from '@turf/rectangle-grid';
 import 'ol/ol.css';
 
 const SplitPolygon = () => {
+    const [dragDirection, setDragDirection] = useState('');
     /*
      * ================= Sources & Layers ====================
      */
@@ -56,7 +50,9 @@ const SplitPolygon = () => {
     const vectorSource = new VectorSource({});
 
     const osmLayer = new TileLayer({
-        source: new OSM(),
+        source: new OSM({
+            url: 'http://mt0.google.com/vt/lyrs=y&hl=en&x={x}&y={y}&z={z}',
+        }),
     });
 
     const vectorLayer = new VectorLayer({
@@ -116,9 +112,10 @@ const SplitPolygon = () => {
             // center: fromLonLat([126.88718, 37.518]),
             // center: [4.228, 51.2675],
             // center: [470608, 6668836],
-            // zoom: 15,
             center: [470450, 6669945],
-            zoom: 20,
+            // center: [0, 0],
+            // center: [6049229, 11594166],
+            zoom: 21,
         }),
     });
 
@@ -154,14 +151,12 @@ const SplitPolygon = () => {
      */
     window.onload = function () {
         const mapDiv = document.getElementById('map2');
-
         let startCoord = [0, 0];
         let middleCoord = [0, 0];
         let endCoord = [0, 0];
         let dragging = false;
         let mouseList = [];
-        let dragDirection;
-        let direction;
+        let dragDegree;
 
         mapDiv.addEventListener('mousedown', (e) => {
             mouseList = [];
@@ -185,13 +180,11 @@ const SplitPolygon = () => {
             if (middleCoord === undefined) {
                 return;
             } else {
-                dragDirection =
+                dragDegree =
                     (endCoord[0] - startCoord[0]) *
                         (middleCoord[1] - startCoord[1]) -
                     (middleCoord[0] - startCoord[0]) *
                         (endCoord[1] - startCoord[1]);
-
-                console.log(dragDirection);
             }
 
             if (
@@ -199,46 +192,47 @@ const SplitPolygon = () => {
                 (diffX < 0 && Math.abs(diffX) < Math.abs(diffY))
             ) {
                 if (diffY > 10) {
-                    if (dragDirection < 0) {
-                        direction = 'DownLeft';
-                        console.log('DownLeft DownLeft DownLeft DownLeft');
-                    } else if (dragDirection > 0) {
-                        direction = 'LeftDown';
-                        console.log('LeftDown LeftDown LeftDown LeftDown');
+                    if (dragDegree < 0) {
+                        // setDragDirection('DownLeft');
+                        // return dragDirection;
+                    } else if (dragDegree > 0) {
+                        // setDragDirection('LeftDown');
+                        // return dragDirection;
                     }
                 } else if (diffY < -10) {
-                    if (dragDirection < 0) {
-                        direction = 'LeftUp';
-                        console.log('LeftUp LeftUp LeftUp LeftUp');
-                    } else if (dragDirection > 0) {
-                        direction = 'UpLeft';
-                        console.log('UpLeft UpLeft UpLeft UpLeft');
+                    if (dragDegree < 0) {
+                        // setDragDirection('LeftUp');
+                        // return dragDirection;
+                    } else if (dragDegree > 0) {
+                        // setDragDirection('UpLeft');
+                        // return dragDirection;
                     }
                 } else if (diffY <= 0 && diffY >= -10) {
-                    console.log('left left left left');
+                    // console.log('left left left left');
+                    // return dragDirection;
                 }
             } else if (
                 (diffX > 0 && Math.abs(diffX) > Math.abs(diffY)) ||
                 (diffX > 0 && Math.abs(diffX) < Math.abs(diffY))
             ) {
                 if (diffY > 10) {
-                    if (dragDirection < 0) {
-                        direction = 'RightDown';
-                        console.log('RightDown RightDown RightDown RightDown');
-                    } else if (dragDirection > 0) {
-                        direction = 'DownRight';
-                        console.log('DownRight DownRight DownRight DownRight');
+                    if (dragDegree < 0) {
+                        // setDragDirection('RightDown');
+                        // return dragDirection;
+                    } else if (dragDegree > 0) {
+                        // setDragDirection('DownRight');
+                        // return dragDirection;
                     }
                 } else if (diffY < -10) {
-                    if (dragDirection < 0) {
-                        direction = 'UpRight';
-                        console.log('UpRight UpRight UpRight UpRight');
-                    } else if (dragDirection > 0) {
-                        direction = 'RightUp';
-                        console.log('RightUp RightUp RightUp RightUp');
+                    if (dragDegree < 0) {
+                        // setDragDirection('UpRight');
+                        // return dragDirection;
+                    } else if (dragDegree > 0) {
+                        // setDragDirection('RightUp');
+                        // return dragDirection;
                     }
                 } else if (diffY <= 0 && diffY >= -10) {
-                    console.log('right right right right');
+                    // return dragDirection;
                 }
             }
 
@@ -250,10 +244,12 @@ const SplitPolygon = () => {
         });
     };
 
+    console.log('dragDirection dragDirection', dragDirection);
+
     /*
      * ========================== 마우스 현재 좌표 ==============================
      */
-    useEffect((e) => {
+    useEffect(() => {
         const mousePosition = new MousePosition({
             coordinateFormat: createStringXY(8),
             projection: 'EPSG:3857',
@@ -672,19 +668,29 @@ const SplitPolygon = () => {
         return ScreenasdfafasdgloryFeature;
     }
 
+    map.on('click', function (event) {
+        console.log([
+            map.getPixelFromCoordinate(event.coordinate)[0].toFixed(1),
+            map.getPixelFromCoordinate(event.coordinate)[1].toFixed(1),
+        ]);
+
+        console.log([
+            map.getCoordinateFromPixel(event.coordinate)[0],
+            map.getCoordinateFromPixel(event.coordinate)[1],
+        ]);
+    });
+
     /*
      * ================================== 도형자르기2 ==================================
      */
+
     function cutPolygon(polygon, line, direction, id) {
         try {
-            let i;
-            let j;
-            let k;
-            let l;
             let polyCoords = [];
             let cutPolyGeoms = [];
             let retVal = null;
             let clippedList = [];
+            let cutMiddleList = [];
 
             const cutFeatures = {
                 type: 'Collection',
@@ -695,27 +701,18 @@ const SplitPolygon = () => {
                 source: new VectorSource({}),
             });
 
-            // if (polygon.type !== 'Polygon' || line[0].type !== 'LineString') {
-            //     console.log('notPolygon or notLineString');
-            //     return retVal;
-            // }
-
-            for (i = 0; i < line.length; i++) {
+            for (let i = 0; i < line.length; i++) {
                 let intersectPoints = lineIntersect(polygon, line[i]);
                 let nPoints = intersectPoints.features.length;
-                // if (nPoints === 0 || nPoints % 2 !== 0) {
-                //     alert('nPoints is 0 or even number');
-                //     return retVal;
-                // }
 
                 let offsetLine = lineOffset(line[i], 0.01 * direction, {
                     units: 'kilometers',
                 });
-                for (j = 0; j < line[i].coordinates.length; j++) {
+                for (let j = 0; j < line[i].coordinates.length; j++) {
                     polyCoords.push(line[i].coordinates[j]);
                 }
                 for (
-                    k = offsetLine.geometry.coordinates.length - 1;
+                    let k = offsetLine.geometry.coordinates.length - 1;
                     k >= 0;
                     k--
                 ) {
@@ -727,85 +724,148 @@ const SplitPolygon = () => {
             }
 
             let clipped = difference(polygon, thickLinePolygon);
+            console.log(clipped);
+            // let polyg = turfPolygon(clipped.geometry.coordinates[j]);
+            // let overlap = lineOverlap(polyg, line, { tolerance: 0.005 });
+            // if (overlap.features.length > 0) {
+            //     cutPolyGeoms.push(polyg.geometry.coordinates);
+            // }
+
+            /*
+             * 좌표 5개가 아닌 Polygon 제거
+             */
             for (let q = 0; q < clipped.geometry.coordinates.length; q++) {
                 if (clipped.geometry.coordinates[q][0].length === 5) {
                     clippedList.push(clipped.geometry.coordinates[q]);
                 }
             }
 
-            for (l = 0; l < clippedList.length; l++) {
-                // let polyg = turfPolygon(clipped.geometry.coordinates[j]);
-                // let overlap = lineOverlap(polyg, line, { tolerance: 0.005 });
-                // if (overlap.features.length > 0) {
-                //     cutPolyGeoms.push(polyg.geometry.coordinates);
-                // }
+            console.log(clippedList);
+            console.log(dragDirection);
 
-                const cutFeature = new Feature({
-                    geometry: new Polygon(clipped.geometry.coordinates[l]),
-                });
+            /*
+             * 좌표 재정의
+             */
+            if (dragDirection === 'DownRight') {
+                for (let l = 0; l < clippedList.length - 1; l++) {
+                    // const cutCoordinate = get_DragBoxCoordToScreenOrder(
+                    //     clippedList[l],
+                    //     map
+                    // )
+                    const beforeTopLeft = map.getPixelFromCoordinate(
+                        clippedList[l][0][0]
+                    );
 
-                const newCutCoordinate = get_DragBoxCoordToScreenOrder(
-                    clippedList[l],
-                    map
-                )
-                    .getGeometry()
-                    .getCoordinates();
+                    const beforeTopLeft_X = beforeTopLeft[0].toFixed(1);
+                    const beforeTopLeft_Y = beforeTopLeft[1].toFixed(1);
 
-                const newCutFeature = new Feature({
-                    geometry: new Polygon(newCutCoordinate),
-                });
+                    // console.log(cutCoordinate);
+                    // cutMiddleList.push(cutCoordinate);
+                    for (let q = l + 1; q < clippedList.length; q++) {
+                        const afterTopLeft = map.getPixelFromCoordinate(
+                            clippedList[q][0][0]
+                        );
 
-                newCutFeature.setStyle(
-                    new Style({
-                        stroke: new Stroke({
-                            color: 'yellow',
-                            width: 3,
-                        }),
-                        fill: new Fill({
-                            color: 'rgba(92, 203, 255, 0.4)',
-                        }),
-                        text: new Text({
-                            font: '20px sans-serif',
-                            text: (l + 1).toString(),
-                        }),
-                    })
-                );
+                        const afterTopLeft_X = afterTopLeft[0].toFixed(1);
+                        const afterTopLeft_Y = afterTopLeft[1].toFixed(1);
+                        if (beforeTopLeft_X === afterTopLeft_X) {
+                            if (beforeTopLeft_Y > afterTopLeft_Y) {
+                                let tmp = clippedList[l];
+                                clippedList[l] = clippedList[q];
+                                clippedList[q] = tmp;
+                            }
+                        }
+                    }
+                }
 
-                // const cutCoordinates = cutFeature
-                //     .getGeometry()
-                //     .getCoordinates();
-                // console.log(cutCoordinates);
+                console.log(cutMiddleList);
+                console.log('clippedList clippedList', clippedList);
 
-                // const cutWidth = new LineString([
-                //     cutCoordinates[0][0],
-                //     cutCoordinates[0][1],
-                // ]);
+                for (let i = 0; i < clippedList.length; i++) {
+                    const cutCoordinate = get_DragBoxCoordToScreenOrder(
+                        clippedList[i],
+                        map
+                    )
+                        .getGeometry()
+                        .getCoordinates();
+                    const cutFeature = new Feature({
+                        geometry: new Polygon(cutCoordinate),
+                    });
 
-                // const cutHeight = new LineString([
-                //     cutCoordinates[0][1],
-                //     cutCoordinates[0][2],
-                // ]);
+                    cutFeature.setStyle(
+                        new Style({
+                            stroke: new Stroke({
+                                color: 'yellow',
+                                width: 0.1,
+                            }),
+                            fill: new Fill({
+                                color: 'rgba(92, 203, 255, 0.4)',
+                            }),
+                            text: new Text({
+                                font: '20px sans-serif',
+                                text: (i + 1).toString(),
+                            }),
+                        })
+                    );
+                    // const cutCoordinates = cutFeature
+                    //     .getGeometry()`
+                    //     .getCoordinates();
+                    // console.log(cutCoordinates);
 
-                // const cutWidthMeasure = formatLength(cutWidth, 3857);
-                // const cutHeightMeasure = formatLength(cutHeight, 3857);
+                    // const cutWidth = new LineString([
+                    //     cutCoordinates[0][0],
+                    //     cutCoordinates[0][1],
+                    // ]);
 
-                // console.log(cutWidthMeasure);
-                // console.log(cutHeightMeasure);
+                    // const cutHeight = new LineString([
+                    //     cutCoordinates[0][1],
+                    //     cutCoordinates[0][2],
+                    // ]);
 
-                // if (
-                //     // (cutWidthMeasure === '0.001875' &&
-                //     //     cutHeightMeasure === '0.004990') ||
-                //     // (cutWidthMeasure === '0.004990' &&
-                //     //     cutHeightMeasure === '0.001875')
-                //     (cutWidthMeasure === '0.020000' &&
-                //         cutHeightMeasure === '0.050000') ||
-                //     (cutWidthMeasure === '0.050000' &&
-                //         cutHeightMeasure === '0.020000')
-                // ) {
-                //     cutFeatures.features.push(cutFeature);
-                // }
-                // cutFeatures.features.push(cutFeature);
-                cutFeatures.features.push(newCutFeature);
+                    // const cutWidthMeasure = formatLength(cutWidth, 3857);
+                    // const cutHeightMeasure = formatLength(cutHeight, 3857);
+
+                    // console.log(cutWidthMeasure);
+                    // console.log(cutHeightMeasure);
+
+                    // if (
+                    //     // (cutWidthMeasure === '0.001875' &&
+                    //     //     cutHeightMeasure === '0.004990') ||
+                    //     // (cutWidthMeasure === '0.004990' &&
+                    //     //     cutHeightMeasure === '0.001875')
+                    //     (cutWidthMeasure === '0.020000' &&
+                    //         cutHeightMeasure === '0.050000') ||
+                    //     (cutWidthMeasure === '0.050000' &&
+                    //         cutHeightMeasure === '0.020000')
+                    // ) {
+                    //     cutFeatures.features.push(cutFeature);
+                    // }
+                    cutFeatures.features.push(cutFeature);
+                }
+            } else {
+                for (let l = 0; l < clippedList.length; l++) {
+                    const cutFeature = new Feature({
+                        geometry: new Polygon(clippedList[l]),
+                    });
+
+                    cutFeature.setStyle(
+                        new Style({
+                            stroke: new Stroke({
+                                color: 'yellow',
+                                width: 0.1,
+                            }),
+                            fill: new Fill({
+                                color: 'rgba(92, 203, 255, 0.4)',
+                            }),
+                            text: new Text({
+                                font: '20px sans-serif',
+                                text: (l + 1).toString(),
+                            }),
+                        })
+                    );
+
+                    cutFeatures.features.push(cutFeature);
+                }
             }
 
             if (cutPolyGeoms.length === 1)
@@ -815,7 +875,6 @@ const SplitPolygon = () => {
             }
 
             cutLayer.getSource().addFeatures(cutFeatures.features);
-            console.log('cutFeatures cutFeatures', cutFeatures.features);
 
             map.addLayer(cutLayer);
 
@@ -832,6 +891,7 @@ const SplitPolygon = () => {
 
     dragBox.on('boxend', (e) => {
         const dragBoxCoordinate = dragBox.getGeometry().getCoordinates();
+        console.log(dragBoxCoordinate);
 
         const newDragCoordinate = get_DragBoxCoordToScreenOrder(
             dragBoxCoordinate,
@@ -873,69 +933,6 @@ const SplitPolygon = () => {
             type: 'Polygon',
         };
 
-        // const topLeftPoint = new Feature({
-        //     geometry: new Circle(
-        //         getTopLeft(gloryFeature.getGeometry().getCoordinates()[0][0]),
-        //         2
-        //     ),
-        // });
-
-        // const topLeftFeatures = {
-        //     type: 'Collection',
-        //     features: [],
-        // };
-
-        // topLeftFeatures.features.push(topLeftPoint);
-
-        // const pointLayer = new VectorLayer({
-        //     source: new VectorSource({}),
-        //     style: new Style({
-        //         fill: new Fill({
-        //             color: 'white',
-        //         }),
-        //         stroke: new Stroke({
-        //             color: 'red',
-        //             width: 2,
-        //         }),
-        //     }),
-        // });
-
-        // const extentFeatures = {
-        //     type: 'Collection',
-        //     features: [],
-        // };
-
-        // const extentPoint = new Feature({
-        //     geometry: new Circle(
-        //         getTopLeft(gloryFeature.getGeometry().getExtent()),
-        //         2
-        //     ),
-        // });
-
-        // extentFeatures.features.push(extentPoint);
-
-        // const extentLayer = new VectorLayer({
-        //     source: new VectorSource({}),
-        //     style: new Style({
-        //         fill: new Fill({
-        //             color: 'white',
-        //         }),
-        //         stroke: new Stroke({
-        //             color: 'blue',
-        //             width: 2,
-        //         }),
-        //     }),
-        // });
-
-        // pointLayer.getSource().addFeatures(topLeftFeatures.features);
-        // extentLayer.getSource().addFeatures(extentFeatures.features);
-        // map.addLayer(pointLayer);
-        // map.addLayer(extentLayer);
-
-        /*
-         * ==============================================================================
-         */
-
         const dragProjection = formatGeoJSON.readFeatures(dragFeature, {
             dataProjection: 'EPSG:3857',
             featureProjection: 'EPSG:4326',
@@ -962,8 +959,14 @@ const SplitPolygon = () => {
             dragCoordinate[0][2],
         ]);
 
-        console.log('넓이 =====> ', formatLength(upperWidth, 4326));
-        console.log('높이 =====> ', formatLength(leftHeight, 4326));
+        console.log(
+            '넓이 =====> ',
+            (formatLength(upperWidth, 4326) * 1000).toFixed(3) + 'm'
+        );
+        console.log(
+            '높이 =====> ',
+            (formatLength(leftHeight, 4326) * 1000).toFixed(3) + 'm'
+        );
 
         const upperLine = {
             type: 'Feature',
@@ -998,7 +1001,7 @@ const SplitPolygon = () => {
         };
 
         /*
-         * ==================== 가로 세로 길이 나누기 4326 ==============================
+         * ==================== 가로 세로 길이 나누기 ==============================
          */
         let i;
         let j;
@@ -1008,8 +1011,8 @@ const SplitPolygon = () => {
         let n;
         let x;
         let upperList = [];
-        // const upperPoint = 0.001875;
-        const upperPoint = 0.01;
+        const upperPoint = 0.001875;
+        // const upperPoint = 0.001;
         const upperDistance = formatLength(upperWidth, 4326);
         if (upperDistance < upperPoint) {
             alert('드래그한 넓이가 최소 길이보다 짧습니다.');
@@ -1025,8 +1028,8 @@ const SplitPolygon = () => {
         }
 
         let lowList = [];
-        // const lowPoint = 0.001875;
-        const lowPoint = 0.01;
+        const lowPoint = 0.001875;
+        // const lowPoint = 0.001;
         const lowDistance = formatLength(lowWidth, 4326);
         if (lowDistance < lowPoint) {
             return;
@@ -1042,8 +1045,8 @@ const SplitPolygon = () => {
         }
 
         let leftList = [];
-        // const leftPoint = 0.00499;
-        const leftPoint = 0.03;
+        const leftPoint = 0.00465;
+        // const leftPoint = 0.01;
         const leftDistance = formatLength(leftHeight, 4326);
         if (leftDistance < leftPoint) {
             alert('드래그한 높이가 최소 높이보다 짧습니다.');
@@ -1059,8 +1062,8 @@ const SplitPolygon = () => {
         }
 
         let rightList = [];
-        // const rightPoint = 0.00499;
-        const rightPoint = 0.03;
+        const rightPoint = 0.00465;
+        // const rightPoint = 0.01;
         const rightDistance = formatLength(rightHeight, 4326);
         if (rightDistance < rightPoint) {
             return;

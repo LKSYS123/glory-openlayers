@@ -7,9 +7,6 @@ a {
 }
 
 /* 줌 슬라이더 */
-.ol-zoom {
-  margin-top: 50px;
-}
 .ol-zoom .ol-zoom-in {
   width: 32px;
   margin-left: 2px;

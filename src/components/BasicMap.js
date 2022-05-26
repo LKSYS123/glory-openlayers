@@ -1,49 +1,20 @@
-import { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import MapContext from '../map/MapContext';
 
 import 'ol/ol.css';
+import VectorLayer from 'ol/layer/Vector';
+import VectorSource from 'ol/source/Vector';
+import { Fill, Stroke, Style } from 'ol/style';
+import { Feature } from 'ol';
+import { LineString, Polygon } from 'ol/geom';
+import Map from '../map/Map';
 
-function BasicMap() {
-    const { map } = useContext(MapContext);
+const BasicMap = () => {
+    const map = useContext(MapContext);
 
-    return (
-        <>
-            <form>
-                <label htmlFor='projection'>Projection </label>
-                <select id='projection'>
-                    <option value='EPSG:4326'>EPSG:4326</option>
-                    <option value='EPSG:3857'>EPSG:3857</option>
-                </select>
-                <label htmlFor='precision'>Precision</label>
-                <input
-                    id='precision'
-                    type='number'
-                    min='0'
-                    max='12'
-                    defaultValue='4'
-                />
-            </form>
-            <div
-                id='map'
-                className='map'
-                style={{ width: '98vw', height: '78vh' }}
-            >
-                <div style={{ marginBottom: 10 }}>
-                    <div
-                        id='mouse-position'
-                        style={{
-                            zIndex: 100,
-                            width: '100%',
-                            margin: '0 auto',
-                            textAlign: 'center',
-                            fontSize: 20,
-                            fontWeight: 600,
-                        }}
-                    ></div>
-                </div>
-            </div>
-        </>
-    );
-}
+    console.log(map);
+
+    return <Map></Map>;
+};
 
 export default BasicMap;

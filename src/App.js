@@ -2,6 +2,8 @@ import { Route, Link } from 'react-router-dom';
 
 import {
     BasicMap,
+    CargoMaker,
+    CargoMaker1,
     GeoJson,
     LayerOpacity,
     LayerSelect,
@@ -17,7 +19,6 @@ import {
     Marker,
 } from './components';
 
-import Map from './map';
 import './App.css';
 
 function App() {
@@ -40,28 +41,29 @@ function App() {
                 <Link to='/mousePolygon'>마우스로 폴리곤생성(가운데 구멍)</Link>
                 <br />
                 <Link to='/marker'>Marker</Link>
+                <Link to='/cargoMaker'>화물정의</Link>
                 <hr />
             </div>
-            <div style={{ width: '90vw', height: '75vh', marginLeft: 30 }}>
-                <Map>
-                    <Route path='/basicMap' component={BasicMap} />
-                    <Route path='/streetLabels' component={StreetLabels} />
-                    <Route path='/measure' component={Measure} />
-                    <Route path='/geoJson' component={GeoJson} />
-                    <Route path='/wmsInfo' component={WMSInfo} />
-                    <Route path='/wmsSample' component={WMSSample} />
-                    <Route path='/vectorInfo' component={VectorInfo} />
-                    <Route path='/merge' component={Merge} />
-                    <Route path='/splitPolygon' component={SplitPolygon} />
-                    <Route
-                        path='/splitPolygonStyle'
-                        component={SplitPolygonStyle}
-                    />
-                    <Route path='/layerOpacity' component={LayerOpacity} />
-                    <Route path='/layerSelect' component={LayerSelect} />
-                    <Route path='/mousePolygon' component={MousePolygon} />
-                    <Route path='/marker' component={Marker} />
-                </Map>
+            <div style={{ width: '95vw', height: '75vh', marginLeft: 30 }}>
+                <Route path='/' exact />
+                <Route path='/basicMap' component={BasicMap} />
+                <Route path='/streetLabels' component={StreetLabels} />
+                <Route path='/measure' component={Measure} />
+                <Route path='/geoJson' component={GeoJson} />
+                <Route path='/wmsInfo' component={WMSInfo} />
+                <Route path='/wmsSample' component={WMSSample} />
+                <Route path='/vectorInfo' component={VectorInfo} />
+                <Route path='/merge' component={Merge} />
+                <Route path='/splitPolygon' component={SplitPolygon} />
+                <Route
+                    path='/splitPolygonStyle'
+                    component={SplitPolygonStyle}
+                />
+                <Route path='/layerOpacity' component={LayerOpacity} />
+                <Route path='/layerSelect' component={LayerSelect} />
+                <Route path='/mousePolygon' component={MousePolygon} />
+                <Route path='/marker' component={Marker} />
+                <Route path='/cargoMaker' component={CargoMaker} />
             </div>
         </>
     );

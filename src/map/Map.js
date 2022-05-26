@@ -1,104 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Map as OlMap, View } from 'ol';
-import { Attribution, defaults as defaultControls } from 'ol/control';
 import { Tile as TileLayer } from 'ol/layer';
 import { fromLonLat } from 'ol/proj';
 import { OSM } from 'ol/source';
 import { defaults as defaultInteractions } from 'ol/interaction';
-import { Stroke, Style, Fill } from 'ol/style';
-import { Vector as VectorSource } from 'ol/source';
-import { Vector as VectorLayer } from 'ol/layer';
-import squareGrid from '@turf/square-grid';
-import GeoJSON from 'ol/format/GeoJSON';
-import { bbox as bboxStrategy } from 'ol/loadingstrategy';
-import MapContext from './MapContext';
 import {
     FullScreenControl,
     MousePositionControl,
     ZoomSliderControl,
     RotationControl,
 } from '../controls';
+import MapContext from './MapContext';
+
 import 'ol/ol.css';
 import '../components/Map.css';
 
-const Map = ({ children, interactions }) => {
+const Map = ({ children }) => {
     const [mapObj, setMapObj] = useState({});
+    const mapRef = useRef();
 
-    const attribution = new Attribution({
-        collapsible: true,
-    });
-    var bbox = [14120000, 4509000, 14130000, 4514000];
-    var options = { units: 'kilometers' };
-    var poly = squareGrid(bbox, 1000, options);
-
-    var vectorSourcePolygons = new VectorSource({
-        features: new GeoJSON().readFeatures(poly),
-    });
-
-    const vectorSource = new VectorSource({
-        format: new GeoJSON(),
-        url: function (extent) {
-            var srcUrl =
-                'http://192.168.1.47:8088/geoserver/GloryGis/ows?service=WFS&version=1.0.0&request=GetFeature&' +
-                'typeName=GloryGis%3Atl_emd._seoul_4326&maxFeatures=100&outputFormat=application/json';
-            return srcUrl;
-            // 'http://192.168.1.59:8080/geoserver/MyFirstProject/ows?service=WFS&' +
-            // 'version=1.0.0&request=GetFeature&typeName=MyFirstProject%' +
-            // '3ALand&maxFeatures=50&outputFormat=application%2Fjson&srsname=EPSG:3857&' +
-            // 'bbox=' +
-            // extent.join(',') +
-            // ',EPSG:3857'
-        },
-        // loader: function (extent, resolution, projection, success, failure) {
-        //     var proj = projection.getCode();
-        //     var url =
-        //         'http://192.168.1.59:3100/api/get_t_strmasterLayer?tstrm_loc=KRBSN&tstrm_code=KWTST&tstrm_kind=OTL&tstrm_codeinter=&outputFormat=application/json';
-        //     var xhr = new XMLHttpRequest();
-        //     xhr.open('GET', url);
-        //     console.log('xhrOpen xhrOpen xhrOpen xhrOpen');
-        //     // xhr.setRequestHeader('Content-Type', 'application/json');
-        //     // xhr.setRequestHeader('Access-Control-Allow-Origin', 'Vary');
-        //     var onError = function () {
-        //         vectorSource.removeLoadedExtent(extent);
-        //         failure();
-        //     };
-        //     xhr.onerror = onError;
-        //     xhr.onload = function () {
-        //         if (xhr.status === 200) {
-        //             console.log('response', xhr.response);
-        //             // var features = vectorSource
-        //             //     .getFormat()
-        //             //     .readFeatures(xhr.responseText);
-        //             // vectorSource.addFeatures(features);
-        //             console.log('xhr xhr xhr xhr', xhr.onload.prototype);
-        //             // console.log('xhr.responseText==>', xhr.responseText);
-        //             // console.log('features==>', features);
-
-        //             // success(features);
-        //         } else {
-        //             console.log('xhrError xhrError xhrError xhrError');
-        //             onError();
-        //         }
-        //     };
-        //     xhr.send();
-        // },
-        strategy: bboxStrategy,
-    });
-
-    var vectorLayerPolygons = new VectorLayer({
-        source: vectorSource,
-        style: [
-            new Style({
-                stroke: new Stroke({
-                    color: 'red',
-                    width: 3,
-                }),
-                fill: new Fill({
-                    color: 'rgba(9, 42, 56, 0.3)',
-                }),
-            }),
-        ],
-    });
+    mapRef.current = mapObj;
 
     // const select = new Select();
 
@@ -110,14 +31,10 @@ const Map = ({ children, interactions }) => {
         // Map 객체 생성 및 OSM 배경지도 추가
         const map = new OlMap({
             interactions: defaultInteractions().extend([]),
-            controls: defaultControls({ attribution: false }).extend([
-                attribution,
-            ]),
             layers: [
                 new TileLayer({
                     source: new OSM(),
                 }),
-                vectorLayerPolygons,
             ],
             target: 'map', // 하위 요소 중 id 가 map 인 element가 있어야함.
             view: new View({
@@ -151,19 +68,52 @@ const Map = ({ children, interactions }) => {
             nowDegree = nowDegree.toFixed(2);
             console.log('rorororororo', nowDegree);
         });
+
+        map.setTarget(mapRef.current);
+
         setMapObj({ map });
         return () => map.setTarget(undefined);
     }, []);
 
     // MapContext.Provider 에 객체 저장
     return (
-        <MapContext.Provider value={mapObj}>
-            {children}
-            <FullScreenControl />
-            {/* <MousePositionControl /> */}
-            <ZoomSliderControl />
-            <RotationControl />
-        </MapContext.Provider>
+        <>
+            <MapContext.Provider value={mapObj}>
+                <form>
+                    <label htmlFor='projection'>Projection </label>
+                    <select id='projection'>
+                        <option value='EPSG:4326'>EPSG:4326</option>
+                        <option value='EPSG:3857'>EPSG:3857</option>
+                    </select>
+                    <label htmlFor='precision'>Precision</label>
+                    <input
+                        id='precision'
+                        type='number'
+                        min='0'
+                        max='12'
+                        defaultValue='4'
+                    />
+                </form>
+                <div
+                    id='mouse-position'
+                    style={{
+                        zIndex: 100,
+                        width: '100%',
+                        margin: '0 auto',
+                        textAlign: 'center',
+                        fontSize: 20,
+                        fontWeight: 600,
+                    }}
+                ></div>
+                <div ref={mapRef} style={{ width: '100%', height: '100%' }}>
+                    {children}
+                    <FullScreenControl />
+                    <MousePositionControl />
+                    <ZoomSliderControl />
+                    <RotationControl />
+                </div>
+            </MapContext.Provider>
+        </>
     );
 };
 

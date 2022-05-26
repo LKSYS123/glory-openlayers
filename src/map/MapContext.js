@@ -1,5 +1,5 @@
 import { createContext } from 'react';
 
-const MapContext = createContext({});
+const MapContext = new createContext({});
 
 export default MapContext;

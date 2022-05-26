@@ -1,4 +1,6 @@
 import BasicMap from './BasicMap';
+import CargoMaker from './CargoMaker';
+import CargoMaker1 from './CargoMaker1';
 import FeatureCRUD from './FeatureCRUD';
 import GeoJson from './GeoJson';
 import LayerOpacity from './LayerOpacity';
@@ -16,6 +18,8 @@ import Marker from './Marker';
 
 export {
     BasicMap,
+    CargoMaker,
+    CargoMaker1,
     FeatureCRUD,
     GeoJson,
     LayerOpacity,

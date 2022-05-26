@@ -5,6 +5,7 @@ import MapContext from '../map/MapContext';
 
 const MousePositionControl = () => {
     const { map } = useContext(MapContext);
+
     useEffect(() => {
         if (!map) return;
         const mousePosition = new MousePosition({
@@ -15,6 +16,7 @@ const MousePositionControl = () => {
         });
 
         const projectionSelect = document.getElementById('projection');
+        if (projectionSelect === null) return;
         projectionSelect.addEventListener('change', function (event) {
             mousePosition.setProjection(event.target.value);
         });

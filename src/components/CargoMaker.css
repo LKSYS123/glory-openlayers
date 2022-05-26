@@ -1,0 +1,17 @@
+.container { height: 60%; }
+
+.menuBar { display: flex; justify-content: space-between; width: 100%; height: 15%; margin: 20px auto; }
+
+.features { display: flex; width: 48%; height: 100%; border: 2px solid black }
+.features > button { color: black }
+.features > button > svg { margin: 0px 5px; font-size: 50px; }
+.features > .customBut { margin: auto 5px; color: black; border: 1px solid black; background: #eee; font-weight: 700; }
+
+.buttons { display: flex;  width: 48%; height: 100%; border: 2px solid black; }
+.buttons > button { margin: auto 10px; color: black; border: 1px solid black; background: #eee; font-weight: 700 }
+
+/* .buttons > .drawing { width: 102px; height: 36px; margin: auto; background: aquamarine; border: 2px solid black; line-height: 2;} */
+/* .buttons > .noDraw { width: 102px; height: 36px; margin: auto; background: #eee; border: 2px solid black; line-height: 2;} */
+
+#map2 { height: 80%; border: 2px solid black }
+.ol-viewport { margin-bottom: 50px;}

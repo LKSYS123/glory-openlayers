@@ -248,7 +248,7 @@ const Measure = () => {
                 attribution: false,
             }).extend([
                 new FullScreen({}),
-                new ZoomSlider(),
+                new ZoomSlider({}),
                 new OverviewMap({
                     layers: [raster],
                 }),
