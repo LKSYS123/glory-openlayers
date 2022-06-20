@@ -3,7 +3,8 @@ import { Route, Link } from 'react-router-dom';
 import {
     BasicMap,
     CargoMaker,
-    CargoMaker1,
+    ClosePoint,
+    Convex,
     GeoJson,
     LayerOpacity,
     LayerSelect,
@@ -11,6 +12,7 @@ import {
     Merge,
     MousePolygon,
     SplitPolygon,
+    SplitPolygon1,
     SplitPolygonStyle,
     StreetLabels,
     VectorInfo,
@@ -42,9 +44,12 @@ function App() {
                 <br />
                 <Link to='/marker'>Marker</Link>
                 <Link to='/cargoMaker'>화물정의</Link>
+                <Link to='/convex'>Convex</Link>
+                <Link to='/splitPolygon1'>폴리곤 드래그 생성_1</Link>
+                <Link to='/closePoint'>가까운점 찾기</Link>
                 <hr />
             </div>
-            <div style={{ width: '95vw', height: '75vh', marginLeft: 30 }}>
+            <div style={{ width: '97vw', height: '75vh', marginLeft: '1rem' }}>
                 <Route path='/' exact />
                 <Route path='/basicMap' component={BasicMap} />
                 <Route path='/streetLabels' component={StreetLabels} />
@@ -64,6 +69,9 @@ function App() {
                 <Route path='/mousePolygon' component={MousePolygon} />
                 <Route path='/marker' component={Marker} />
                 <Route path='/cargoMaker' component={CargoMaker} />
+                <Route path='/convex' component={Convex} />
+                <Route path='/splitPolygon1' component={SplitPolygon1} />
+                <Route path='/closePoint' component={ClosePoint} />
             </div>
         </>
     );

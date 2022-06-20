@@ -43,7 +43,6 @@ const SplitPolygon = () => {
     let dragDirection;
 
     // ================= Sources & Layers ====================
-    const sourceDrawnPolygons = new VectorSource({ wrapX: false });
     const vectorSource = new VectorSource({});
 
     const osmLayer = new TileLayer({
@@ -104,15 +103,12 @@ const SplitPolygon = () => {
             translate,
             dragBox,
         ]),
-        // layers: [osmLayer, vectorLayer],
-        // layers: [osmLayer],
+        layers: [osmLayer],
         target: 'map2',
         view: new View({
             // center: fromLonLat([126.88718, 37.518]),
             // center: [4.228, 51.2675],
-            // center: [470608, 6668836],
             center: [470475, 6669970],
-            // center: [0, 0],
             // center: [6049229, 11594166],
             zoom: 21,
         }),
@@ -667,6 +663,7 @@ const SplitPolygon = () => {
 
             const cutLayer = new VectorLayer({
                 source: new VectorSource({}),
+                renderOrder: null,
             });
 
             for (let i = 0; i < line.length; i++) {
@@ -692,7 +689,6 @@ const SplitPolygon = () => {
             }
 
             let clipped = difference(polygon, thickLinePolygon);
-            console.log(clipped);
             // let polyg = turfPolygon(clipped.geometry.coordinates[j]);
             // let overlap = lineOverlap(polyg, line, { tolerance: 0.005 });
             // if (overlap.features.length > 0) {
@@ -723,6 +719,10 @@ const SplitPolygon = () => {
 
                     const beforeTopLeft_X = beforeTopLeft[0].toFixed(1);
                     const beforeTopLeft_Y = beforeTopLeft[1].toFixed(1);
+
+                    console.log(
+                        '==============' + (i + 1) + '================='
+                    );
 
                     for (let l = i + 1; l < clippedList.length; l++) {
                         const afterTopLeft = map.getPixelFromCoordinate(
@@ -825,6 +825,10 @@ const SplitPolygon = () => {
                     const beforeTopLeft_X = beforeTopLeft[0].toFixed(1);
                     const beforeTopLeft_Y = beforeTopLeft[1].toFixed(1);
 
+                    console.log(
+                        '==============' + (i + 1) + '================='
+                    );
+
                     for (let l = i + 1; l < clippedList.length; l++) {
                         const afterTopLeft = map.getPixelFromCoordinate(
                             clippedList[l][0][0]
@@ -919,6 +923,10 @@ const SplitPolygon = () => {
                     const beforeTopLeft_X = beforeTopLeft[0].toFixed(1);
                     const beforeTopLeft_Y = beforeTopLeft[1].toFixed(1);
 
+                    console.log(
+                        '==============' + (i + 1) + '================='
+                    );
+
                     for (let l = i + 1; l < clippedList.length; l++) {
                         const afterTopLeft = map.getPixelFromCoordinate(
                             clippedList[l][0][0]
@@ -983,8 +991,12 @@ const SplitPolygon = () => {
                         clippedList[i][0][0]
                     );
 
-                    const beforeTopLeft_X = beforeTopLeft[0].toFixed(1);
-                    const beforeTopLeft_Y = beforeTopLeft[1].toFixed(1);
+                    const beforeTopLeft_X = beforeTopLeft[0].toFixed(2);
+                    const beforeTopLeft_Y = beforeTopLeft[1].toFixed(2);
+
+                    console.log(
+                        '==============' + (i + 1) + '================='
+                    );
 
                     for (let l = i + 1; l < clippedList.length; l++) {
                         const afterTopLeft = map.getPixelFromCoordinate(
@@ -994,73 +1006,26 @@ const SplitPolygon = () => {
                         const afterTopLeft_X = afterTopLeft[0].toFixed(2);
                         const afterTopLeft_Y = afterTopLeft[1].toFixed(2);
 
-                        // console.log(
-                        //     'before: ' + (l + 1),
-                        //     '[' +
-                        //         [beforeTopLeft_X, beforeTopLeft_Y] +
-                        //         '] / after: ' +
-                        //         (q + 1),
-                        //     '[' + [afterTopLeft_X, afterTopLeft_Y] + ']'
-                        // );
-
-                        if (
-                            beforeTopLeft_X <= afterTopLeft_X &&
-                            beforeTopLeft_Y === afterTopLeft_Y
-                        ) {
-                            console.log(
-                                'before: (' +
-                                    [
-                                        i + 1 + ') ' + beforeTopLeft_X,
-                                        beforeTopLeft_Y,
-                                    ] +
-                                    ' / after: (' +
-                                    [
-                                        l + 1 + ') ' + afterTopLeft_X,
-                                        afterTopLeft_Y,
-                                    ]
-                            );
-                            let tmp = clippedList[i];
-                            clippedList[i] = clippedList[l];
-                            clippedList[l] = tmp;
-                        }
+                        // if (beforeTopLeft_X <= afterTopLeft_X) {
+                        //     console.log(
+                        //         'before: (' +
+                        //             [
+                        //                 i + 1 + ') ' + beforeTopLeft_X,
+                        //                 beforeTopLeft_Y,
+                        //             ] +
+                        //             ' / after: (' +
+                        //             [
+                        //                 l + 1 + ') ' + afterTopLeft_X,
+                        //                 afterTopLeft_Y,
+                        //             ]
+                        //     );
+                        //     let tmp = clippedList[i];
+                        //     clippedList[i] = clippedList[l];
+                        //     clippedList[l] = tmp;
+                        // }
                     }
                 }
                 console.log('>====================================<');
-
-                // for (let l = clippedList.length - 1; l > 1; l--) {
-                //     const beforeTopLeft = map.getPixelFromCoordinate(
-                //         clippedList[l][0][0]
-                //     );
-
-                //     const beforeTopLeft_X = beforeTopLeft[0].toFixed(2);
-                //     const beforeTopLeft_Y = beforeTopLeft[1].toFixed(2);
-                //     console.log('============ ' + (l + 1) + ' ===============');
-
-                //     for (let q = l - 1; q > 0; q--) {
-                //         const afterTopLeft = map.getPixelFromCoordinate(
-                //             clippedList[q][0][0]
-                //         );
-
-                //         const afterTopLeft_X = afterTopLeft[0].toFixed(2);
-                //         const afterTopLeft_Y = afterTopLeft[1].toFixed(2);
-
-                //         console.log(
-                //             'before: ' +
-                //                 [l + 1, beforeTopLeft_X, beforeTopLeft_Y] +
-                //                 ' / after: ' +
-                //                 [q + 1, afterTopLeft_X, afterTopLeft_Y]
-                //         );
-
-                //         if (beforeTopLeft_Y > afterTopLeft_Y) {
-                //             if (beforeTopLeft_X > afterTopLeft_X) {
-                //                 let tmp = clippedList[l];
-                //                 clippedList[l] = clippedList[q];
-                //                 clippedList[q] = tmp;
-                //                 break;
-                //             }
-                //         }
-                //     }
-                // }
 
                 for (let i = 0; i < clippedList.length; i++) {
                     const cutCoordinate = get_DragBoxCoordToScreenOrder(
@@ -1069,6 +1034,7 @@ const SplitPolygon = () => {
                     )
                         .getGeometry()
                         .getCoordinates();
+                    console.log('======= (' + i + ')' + cutCoordinate);
                     const cutFeature = new Feature({
                         geometry: new Polygon(cutCoordinate),
                     });

@@ -33,9 +33,10 @@ const Measure = () => {
     const clearPrevious = document.getElementById('clear');
 
     useEffect(() => {
+        // 도형
         const style = new Style({
             fill: new Fill({
-                color: 'rgba(255, 255, 255, 0.2)',
+                color: 'rgba(25, 255, 255, 0.2)',
             }),
             stroke: new Stroke({
                 color: 'rgba(0, 0, 0, 0.5)',
@@ -53,6 +54,7 @@ const Measure = () => {
             }),
         });
 
+        // 마지막 지점 글씨
         const labelStyle = new Style({
             text: new Text({
                 font: '14px Calibri,sans-serif',
@@ -77,6 +79,7 @@ const Measure = () => {
             }),
         });
 
+        // 그릴때 커서 옆부분
         const tipStyle = new Style({
             text: new Text({
                 font: '12px Calibri,sans-serif',
@@ -117,11 +120,12 @@ const Measure = () => {
             }),
         });
 
+        // 각 지점 글씨
         const segmentStyle = new Style({
             text: new Text({
                 font: '12px Calibri,sans-serif',
                 fill: new Fill({
-                    color: 'rgba(255, 255, 255, 1)',
+                    color: 'rgba(25, 255, 255, 1)',
                 }),
                 backgroundFill: new Fill({
                     color: 'rgba(0, 0, 0, 0.4)',
@@ -151,8 +155,6 @@ const Measure = () => {
             } else {
                 output = Math.round(length * 100) / 100 + ' m';
             }
-            console.log('length length', length);
-            console.log('output output', output);
             return output;
         };
 
@@ -176,7 +178,6 @@ const Measure = () => {
         const modify = new Modify({ source: source, style: modifyStyle });
 
         let tipPoint;
-
         function styleFunction(feature, segments, drawType, tip) {
             const styles = [style];
             const geometry = feature.getGeometry();
@@ -192,14 +193,6 @@ const Measure = () => {
                     label = formatLength(geometry);
                     line = geometry;
                 }
-                console.log(
-                    'geometry.getLastCoordinate()',
-                    geometry.getLastCoordinate()
-                );
-                console.log(typeof geometry);
-                console.log('geometry geometry', geometry);
-                console.log('point point point', point);
-                console.log('line line line', line);
             }
             if (segments && line) {
                 let count = 0;
