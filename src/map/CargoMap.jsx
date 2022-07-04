@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 import { Map as OlMap, View } from 'ol';
-import { Tile as TileLayer } from 'ol/layer';
-import { fromLonLat } from 'ol/proj';
-import { OSM, XYZ } from 'ol/source';
+import { VectorTile as VectorTileLayer } from 'ol/layer';
+import { VectorTile as VectorTileSource } from 'ol/source';
+import GeoJSON from 'ol/format/GeoJSON';
 import { defaults as defaultInteractions } from 'ol/interaction';
+import { Stroke, Style } from 'ol/style';
 import {
     FullScreenControl,
     MousePositionControl,
@@ -28,18 +29,24 @@ const CargoMap = ({ children }) => {
     // });
 
     useEffect(() => {
+        let mapLayer = new VectorTileLayer({
+            source: new VectorTileSource({
+                maxZoom: 25,
+                format: new GeoJSON(),
+                // OpenLayers VectorTiles use WMS tile numbering by default.
+                url: 'https://grid.plus.codes/grid/wms/{z}/{x}/{y}.json?zoomadjust=2',
+            }),
+            style: new Style({
+                stroke: new Stroke({
+                    color: 'black',
+                    width: 1,
+                }),
+            }),
+        });
+
         // Map 객체 생성 및 OSM 배경지도 추가
-        const map = new OlMap({
-            layers: [
-                new TileLayer({
-                    source: new OSM(),
-                }),
-                new TileLayer({
-                    source: new XYZ({
-                        url: 'https://grid.plus.codes/grid/wms/{z}/{x}/{y}.png?col=black',
-                    }),
-                }),
-            ],
+        const map = new Map({
+            layers: [mapLayer],
             target: 'map2',
             view: new View({
                 // projection: 'EPSG:4326',
@@ -87,10 +94,7 @@ const CargoMap = ({ children }) => {
             ></div>
             <div ref={mapRef} style={{ width: '100%', height: '100%' }}>
                 {children}
-                <FullScreenControl />
                 <MousePositionControl />
-                <ZoomSliderControl />
-                <RotationControl />
             </div>
         </MapContext.Provider>
     );

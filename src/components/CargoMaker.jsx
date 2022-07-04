@@ -32,7 +32,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 
 import './CargoMaker.css';
 import 'ol/ol.css';
-import MapContext from '../map/MapContext';
+import CargoMap from '../map/CargoMap';
 
 const CargoMaker = ({ children }) => {
     // ============================= State & Ref ==========================
@@ -384,7 +384,7 @@ const CargoMaker = ({ children }) => {
             // }),
             mapLayer,
         ],
-        target: 'map2',
+        target: 'cargoMap',
         view: new View({
             // projection: 'EPSG:4326',
             // center: fromLonLat([0, 0]),
@@ -422,7 +422,20 @@ const CargoMaker = ({ children }) => {
         if (headingPoint !== undefined) {
             headingPoint.innerHTML = '';
         }
+        map.removeInteraction(draw);
     };
+
+    map.on('click', function (event) {
+        console.log([
+            map.getPixelFromCoordinate(event.coordinate)[0].toFixed(2),
+            map.getPixelFromCoordinate(event.coordinate)[1].toFixed(2),
+        ]);
+
+        console.log([
+            event.coordinate[0].toFixed(4),
+            event.coordinate[1].toFixed(4),
+        ]);
+    });
 
     // ================== 화물의 전체적인 Length / Width 출력
     const makeExtent = (feature) => {
@@ -526,6 +539,7 @@ const CargoMaker = ({ children }) => {
         };
 
         makeExtent(squareFeature);
+        console.log(squareFeatures.features[0].getGeometry().get);
 
         squareLayer.getSource().addFeatures(squareFeatures.features);
         nowLayer = squareLayer;
@@ -990,7 +1004,7 @@ const CargoMaker = ({ children }) => {
                         marginRight: '1rem',
                     }}
                 >
-                    <div id='map2'></div>
+                    <div id='cargoMap'></div>
                     <a id='image-download' download='map.png'></a>
                 </div>
                 <div style={{ width: '9%', paddingTop: '1rem' }}>
