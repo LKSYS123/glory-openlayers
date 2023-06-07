@@ -36,11 +36,10 @@ const Map = ({ children }) => {
                     source: new OSM(),
                 }),
             ],
-            target: 'map', // 하위 요소 중 id 가 map 인 element가 있어야함.
+            // target: 'map', // 하위 요소 중 id 가 map 인 element가 있어야함.
             view: new View({
                 center: fromLonLat([126.91, 37.515881]),
                 zoom: 12,
-                rotation: Math.PI / 180,
             }),
         });
 

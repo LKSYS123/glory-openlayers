@@ -3,6 +3,7 @@ import { Route, Link } from 'react-router-dom';
 import {
     BasicMap,
     CargoMaker,
+    CargoMaker1,
     ClosePoint,
     Convex,
     GeoJson,
@@ -44,6 +45,7 @@ function App() {
                 <br />
                 <Link to='/marker'>Marker</Link>
                 <Link to='/cargoMaker'>화물정의</Link>
+                <Link to='/cargoMaker1'>화물정의1</Link>
                 <Link to='/convex'>Convex</Link>
                 <Link to='/splitPolygon1'>폴리곤 드래그 생성_1</Link>
                 <Link to='/closePoint'>가까운점 찾기</Link>
@@ -69,6 +71,7 @@ function App() {
                 <Route path='/mousePolygon' component={MousePolygon} />
                 <Route path='/marker' component={Marker} />
                 <Route path='/cargoMaker' component={CargoMaker} />
+                <Route path='/cargoMaker1' component={CargoMaker1} />
                 <Route path='/convex' component={Convex} />
                 <Route path='/splitPolygon1' component={SplitPolygon1} />
                 <Route path='/closePoint' component={ClosePoint} />

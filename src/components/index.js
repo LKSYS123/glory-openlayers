@@ -1,5 +1,6 @@
 import BasicMap from './BasicMap';
 import CargoMaker from './CargoMaker';
+import CargoMaker1 from './CargoMaker1';
 import ClosePoint from './ClosePoint';
 import Convex from './Convex';
 import FeatureCRUD from './FeatureCRUD';
@@ -21,6 +22,7 @@ import Marker from './Marker';
 export {
     BasicMap,
     CargoMaker,
+    CargoMaker1,
     ClosePoint,
     Convex,
     FeatureCRUD,

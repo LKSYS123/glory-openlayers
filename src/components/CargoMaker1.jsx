@@ -245,10 +245,10 @@ const CargoMaker = ({ children }) => {
 
     const segmentStyles = [segmentStyle];
 
-    function styleFunction(feature, layer, segments) {
+    function styleFunction(feature, name, segments) {
         let styles;
         let point, line, label;
-        switch (layer) {
+        switch (name) {
             case 'triangle':
                 styles = [cargoStyles.triangle];
                 break;
@@ -480,11 +480,10 @@ const CargoMaker = ({ children }) => {
         nowLayer.changed();
         draw.getOverlay().changed();
     };
-    console.log(showSegments.checked);
 
     // ========== 삼각형
     const makeTriangle = () => {
-        removeLayers();
+        // removeLayers();
         triangleLayer = new VectorLayer({
             source: new VectorSource({}),
             style: function (feature) {
@@ -519,32 +518,23 @@ const CargoMaker = ({ children }) => {
                             [0, 2.3275],
                         ],
                     ]),
-                    style: new Style({
-                        fill: new Fill({
-                            color: 'black',
-                        }),
-                    }),
                 }),
             ],
         });
 
-        // triangleSource.features[0].setStyle({
-        //     fill: new Fill({
-        //         color: 'black',
-        //     }),
-        // });
-
         makeExtent(triangleFeature);
-
         triangleLayer.getSource().addFeatures(triangleFeatures.features);
         nowLayer = triangleLayer;
+        triangleSource.getFeatures()[0].setStyle(function (feature) {
+            return styleFunction(feature, 'triangle', showSegments.checked);
+        });
         cargoLayer.setSource(triangleSource);
         // map.addLayer(triangleLayer);
     };
 
     // 사각형
     const makeSquare = () => {
-        removeLayers();
+        // removeLayers();
         squareLayer = new VectorLayer({
             source: new VectorSource({}),
             style: function (feature) {
@@ -570,11 +560,32 @@ const CargoMaker = ({ children }) => {
         };
 
         makeExtent(squareFeature);
-        console.log(squareFeatures.features[0].getGeometry().get);
+
+        const squareSource = new VectorSource({
+            features: [
+                new Feature({
+                    geometry: new Polygon([
+                        [
+                            [-0.9135, 2.3275],
+                            [0.9135, 2.3275],
+                            [0.9135, -2.3275],
+                            [-0.9135, -2.3275],
+                            [-0.9135, 2.3275],
+                        ],
+                    ]),
+                }),
+            ],
+        });
+
+        squareSource.getFeatures()[0].setStyle(function (feature) {
+            return styleFunction(feature, 'square', showSegments.checked);
+        });
+        cargoLayer.setSource(squareSource);
 
         squareLayer.getSource().addFeatures(squareFeatures.features);
         nowLayer = squareLayer;
-        map.addLayer(squareLayer);
+        // map.addLayer(squareLayer);
+        cargoLayer.setSource(squareSource);
     };
 
     // 오각형
@@ -607,9 +618,31 @@ const CargoMaker = ({ children }) => {
 
         makeExtent(pentagonFeature);
 
+        const pentagonSource = new VectorSource({
+            features: [
+                new Feature({
+                    geometry: new Polygon([
+                        [
+                            [0, 2.3275],
+                            [2, 0.7],
+                            [0.9135, -2.3275],
+                            [-0.9135, -2.3275],
+                            [-2, 0.7],
+                            [0, 2.3275],
+                        ],
+                    ]),
+                }),
+            ],
+        });
+
+        pentagonSource.getFeatures()[0].setStyle(function (feature) {
+            return styleFunction(feature, 'pentagon', showSegments.checked);
+        });
+        cargoLayer.setSource(pentagonSource);
+
         pentagonLayer.getSource().addFeatures(pentagonFeatures.features);
         nowLayer = pentagonLayer;
-        map.addLayer(pentagonLayer);
+        // map.addLayer(pentagonLayer);
     };
 
     // 원
@@ -633,9 +666,22 @@ const CargoMaker = ({ children }) => {
 
         makeExtent(circleFeature);
 
+        const circleSource = new VectorSource({
+            features: [
+                new Feature({
+                    geometry: new Circle([0, 0], 1),
+                }),
+            ],
+        });
+
+        circleSource.getFeatures()[0].setStyle(function (feature) {
+            return styleFunction(feature, 'circle', showSegments.checked);
+        });
+        cargoLayer.setSource(circleSource);
+
         circleLayer.getSource().addFeatures(circleFeatures.features);
         nowLayer = circleLayer;
-        map.addLayer(circleLayer);
+        // map.addLayer(circleLayer);
     };
     // 다각형?
     const makeElephant = () => {
@@ -670,9 +716,34 @@ const CargoMaker = ({ children }) => {
 
         makeExtent(elephantFeature);
 
+        const elephantSource = new VectorSource({
+            features: [
+                new Feature({
+                    geometry: new Polygon([
+                        [
+                            [-1, 0.9135],
+                            [1, 0.9135],
+                            [1, 0.2385],
+                            [2.3275, 0.2385],
+                            [2.3275, -0.9135],
+                            [-2.3275, -0.9135],
+                            [-2.3275, 0.2385],
+                            [-1, 0.2385],
+                            [-1, 0.9135],
+                        ],
+                    ]),
+                }),
+            ],
+        });
+
+        elephantSource.getFeatures()[0].setStyle(function (feature) {
+            return styleFunction(feature, 'elephant', showSegments.checked);
+        });
+        cargoLayer.setSource(elephantSource);
+
         elephantLayer.getSource().addFeatures(elephantFeatures.features);
         nowLayer = elephantLayer;
-        map.addLayer(elephantLayer);
+        // map.addLayer(elephantLayer);
     };
 
     // 십자가
@@ -712,6 +783,31 @@ const CargoMaker = ({ children }) => {
 
         makeExtent(crossFeature);
 
+        const crossSource = new VectorSource({
+            features: [
+                new Feature({
+                    geometry: new Polygon([
+                        [
+                            [-1, 0.9135],
+                            [1, 0.9135],
+                            [1, 0.2385],
+                            [2.3275, 0.2385],
+                            [2.3275, -0.9135],
+                            [-2.3275, -0.9135],
+                            [-2.3275, 0.2385],
+                            [-1, 0.2385],
+                            [-1, 0.9135],
+                        ],
+                    ]),
+                }),
+            ],
+        });
+
+        crossSource.getFeatures()[0].setStyle(function (feature) {
+            return styleFunction(feature, 'cross', showSegments.checked);
+        });
+        cargoLayer.setSource(crossSource);
+
         crossLayer.getSource().addFeatures(crossFeatures.features);
         nowLayer = crossLayer;
         map.addLayer(crossLayer);
@@ -745,8 +841,23 @@ const CargoMaker = ({ children }) => {
 
         makeExtent(drawFeature);
 
+        const drawSource = new VectorSource({
+            features: [
+                new Feature({
+                    geometry: new Polygon([
+                        e.feature.getGeometry().getCoordinates()[0],
+                    ]),
+                }),
+            ],
+        });
+
+        drawSource.getFeatures()[0].setStyle(function (feature) {
+            return styleFunction(feature, 'custom', showSegments.checked);
+        });
+        cargoLayer.setSource(drawSource);
+
         customLayer.getSource().addFeatures(drawFeatures.features);
-        map.addLayer(customLayer);
+        // map.addLayer(customLayer);
         // setNowDrawing(false);
         nowLayer = customLayer;
         map.removeInteraction(draw);
@@ -757,7 +868,7 @@ const CargoMaker = ({ children }) => {
     const onModify = () => {
         map.removeLayer(vertexLayer);
         if (nowLayer === undefined) return;
-        const modifySource = nowLayer.getSource();
+        const modifySource = cargoLayer.getSource();
         modify = new Modify({
             source: modifySource,
             style: modifyStyle,
@@ -776,8 +887,8 @@ const CargoMaker = ({ children }) => {
         map.removeLayer(vertexLayer);
         map.removeInteraction(select);
         map.removeInteraction(modify);
-        const nowFeature = nowLayer.getSource().getFeatures()[0];
-        const nowFeatureCoord = nowFeature.getGeometry().getCoordinates();
+        const cargoFeature = cargoLayer.getSource().getFeatures()[0];
+        const cargoFeatureCoord = cargoFeature.getGeometry().getCoordinates();
 
         const vertexFeatures = {
             type: 'Feature',
@@ -785,8 +896,8 @@ const CargoMaker = ({ children }) => {
         };
 
         if (nowLayer === circleLayer) {
-            console.log(nowFeature.getGeometry().getExtent());
-            const circleExtent = nowFeature.getGeometry().getExtent();
+            console.log(cargoFeature.getGeometry().getExtent());
+            const circleExtent = cargoFeature.getGeometry().getExtent();
             const circleVertex = [
                 [0, circleExtent[3]],
                 [circleExtent[2], 0],
@@ -804,20 +915,20 @@ const CargoMaker = ({ children }) => {
             }
             console.log(vertexFeatures);
         } else {
-            if ((nowFeatureCoord[0].length - 1) % 2 !== 0) {
-                for (let i = 0; i < nowFeatureCoord[0].length - 1; i++) {
+            if ((cargoFeatureCoord[0].length - 1) % 2 !== 0) {
+                for (let i = 0; i < cargoFeatureCoord[0].length - 1; i++) {
                     const vertexFeature = new Feature({
-                        geometry: new Circle(nowFeatureCoord[0][i], 0.1),
+                        geometry: new Circle(cargoFeatureCoord[0][i], 0.1),
                     });
                     vertexFeature.set('Cood', i);
                     vertexFeatures.features.push(vertexFeature);
                 }
             } else {
-                for (let i = 0; i < nowFeatureCoord[0].length - 1; i++) {
+                for (let i = 0; i < cargoFeatureCoord[0].length - 1; i++) {
                     const lineFeature = new Feature({
                         geometry: new LineString([
-                            nowFeatureCoord[0][i],
-                            nowFeatureCoord[0][i + 1],
+                            cargoFeatureCoord[0][i],
+                            cargoFeatureCoord[0][i + 1],
                         ]),
                     });
 
