@@ -1,4 +1,4 @@
-import BasicMap from './BasicMap';
+import TestMap from './TestMap';
 import CargoMaker from './CargoMaker';
 import CargoMaker1 from './CargoMaker1';
 import ClosePoint from './ClosePoint';
@@ -18,9 +18,10 @@ import VectorInfo from './VectorInfo';
 import WMSInfo from './WMSInfo';
 import WMSSample from './WMSSample';
 import Marker from './Marker';
+import BasicMap from './BasicMap';
 
 export {
-    BasicMap,
+    TestMap,
     CargoMaker,
     CargoMaker1,
     ClosePoint,
@@ -40,4 +41,5 @@ export {
     WMSInfo,
     WMSSample,
     Marker,
+    BasicMap,
 };

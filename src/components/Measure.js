@@ -11,11 +11,11 @@ import {
     Text,
 } from 'ol/style';
 import { Draw, Modify } from 'ol/interaction';
-import { LineString, Point } from 'ol/geom';
+import { LineString, Point, Polygon } from 'ol/geom';
 import { OSM, Vector as VectorSource } from 'ol/source';
 import { Tile as TileLayer, Vector as VectorLayer } from 'ol/layer';
 import { getArea, getLength } from 'ol/sphere';
-import { fromLonLat } from 'ol/proj';
+import { fromLonLat, transform } from 'ol/proj';
 import {
     Attribution,
     defaults as defaultControls,
@@ -26,6 +26,7 @@ import {
 } from 'ol/control';
 import 'ol/ol.css';
 import { createStringXY } from 'ol/coordinate';
+import { Feature } from 'ol';
 
 const Measure = () => {
     const typeSelect = document.getElementById('type');
@@ -173,6 +174,50 @@ const Measure = () => {
             source: new OSM(),
         });
 
+        // const beforeCord = [
+        //     [-52.49999999999999, -182.30389217063725],
+        //     [-52.49999999999999, 1150.2727818249282],
+        //     [-52.49999999999999, 1150.2685657024624],
+        //     [-52.49999999999999, 192.48259181663462],
+        //     [-52.49999999999999, 1.850798276088958],
+        //     [-52.49999999999999, 1.8507990115639028],
+        //     [-52.49999999999999, -182.30370343409814],
+        //     [-52.49999999999999, -182.30389217063725],
+        // ];
+
+        // const beforeCord1 = [
+        //     [127.67867760242724, 34.91254616875249],
+        //     [127.67867872785033, 34.91306557833056],
+        //     [127.67898568415438, 34.91306512664243],
+        //     [127.67898487386401, 34.91269180101893],
+        //     [127.67879773736979, 34.91261777181701],
+        //     [127.67876445840751, 34.91261782077294],
+        //     [127.67876430280654, 34.91254604125255],
+        //     [127.67867760242724, 34.91254616875249],
+        // ];
+        // let afterCord = [];
+        // beforeCord.map((record) => {
+        //     const result = transform(record, 'EPSG:3857', 'EPSG:4326');
+        //     afterCord.push(result);
+        // });
+
+        // let afterCord1 = [];
+        // beforeCord1.map((record) => {
+        //     const result = transform(record, 'EPSG:4326', 'EPSG:3857');
+        //     afterCord1.push(result);
+        // });
+        // console.log(afterCord1);
+
+        // const polygon1 = new Polygon([afterCord1]);
+        // const polygon2 = new Polygon([beforeCord]);
+
+        // const polygonFeature = new Feature({
+        //     geometry: polygon1,
+        // });
+        // const polygonFeature2 = new Feature({
+        //     geometry: polygon2,
+        // });
+
         const source = new VectorSource();
 
         const modify = new Modify({ source: source, style: modifyStyle });
@@ -235,6 +280,14 @@ const Measure = () => {
             },
         });
 
+        // vector.getSource().addFeatures([
+        //     // lineFeature,
+        //     // pointFeature,
+        //     polygonFeature,
+        //     polygonFeature2,
+        //     // circleFeature,
+        // ]);
+
         const map = new Map({
             controls: defaultControls({
                 zoom: true,
@@ -253,6 +306,8 @@ const Measure = () => {
             target: 'map',
             view: new View({
                 center: fromLonLat([127.0, 37.55]),
+                // center: [127.0, 37.55],
+                // projection: 'EPSG:4326',
                 zoom: 14,
             }),
         });

@@ -29,10 +29,8 @@ import {
     multiPolygon as turfMultiPolygon,
     lineOffset,
     lineIntersect,
-    lineDistance,
     along,
     toMercator,
-    lineOverlap,
 } from '@turf/turf';
 import rectangleGrid from '@turf/rectangle-grid';
 
@@ -270,17 +268,17 @@ const SplitPolygon = () => {
 
         /*================회전시 그려지는 영역(초록색 테두리)=============== */
         const polygonBbox = bbox(polygon);
-        const gloryBbox = [
+        const lkBbox = [
             polygon.geometry.coordinates[0][0][0],
             polygon.geometry.coordinates[0][1][1],
             polygon.geometry.coordinates[0][2][0],
             polygon.geometry.coordinates[0][3][1],
         ];
 
-        const gloryBboxPolygon = bboxPolygon(gloryBbox);
+        const lkBboxPolygon = bboxPolygon(lkBbox);
 
         const lkFeature = new Feature({
-            geometry: new Polygon(gloryBboxPolygon.geometry.coordinates),
+            geometry: new Polygon(lkBboxPolygon.geometry.coordinates),
         });
 
         const lkFeatures = {
@@ -327,7 +325,7 @@ const SplitPolygon = () => {
                 geometry: new Point(iconPoint.geometry.coordinates),
             });
 
-            const glorymask = turfPolygon([
+            const lkMask = turfPolygon([
                 [
                     [
                         maskCood[0][0][0] + 0.000005,
@@ -346,7 +344,7 @@ const SplitPolygon = () => {
                 ],
             ]);
 
-            const masked = mask(maskPolygon, glorymask);
+            const masked = mask(maskPolygon, lkMask);
             maskFeatures.features.push(masked);
             console.log('masked masked', masked);
 
@@ -631,12 +629,12 @@ const SplitPolygon = () => {
         RealSeqArrayOut.push(newPolygon_Coordinate);
 
         // 드래그 영역
-        const ScreenasdfafasdgloryFeature = new Feature({
+        const ScreenGloryFeature = new Feature({
             geometry: new Polygon(RealSeqArrayOut),
             type: 'Polygon',
         });
 
-        return ScreenasdfafasdgloryFeature;
+        return ScreenGloryFeature;
     }
 
     map.on('click', function (event) {

@@ -1,7 +1,7 @@
 import { Route, Link } from 'react-router-dom';
 
 import {
-    BasicMap,
+    TestMap,
     CargoMaker,
     CargoMaker1,
     ClosePoint,
@@ -20,6 +20,7 @@ import {
     WMSInfo,
     WMSSample,
     Marker,
+    BasicMap,
 } from './components';
 
 import './App.css';
@@ -29,7 +30,8 @@ function App() {
         <>
             <div className='list' style={{ margin: 10, lineHeight: 1.5 }}>
                 <Link to='/'>Home</Link>
-                <Link to='/basicMap'>기본 맵</Link>
+                <Link to='/testMap'>테스트 맵</Link>
+                <Link to='/basicMap'>기본 맵(230607)</Link>
                 <Link to='/streetLabels'>이동범위 제한</Link>
                 <Link to='/measure'>도형그리기(거리측정)</Link>
                 <Link to='/geoJson'>좌표로 도형생성</Link>
@@ -40,20 +42,20 @@ function App() {
                 <Link to='/splitPolygon'>폴리곤 드래그 생성</Link>
                 <Link to='/splitPolygonStyle'>폴리곤 드래그 스타일</Link>
                 <Link to='/layerOpacity'>레이어 투명도</Link>
-                <Link to='/layerSelect'>레이어별 Select</Link>
-                <Link to='/mousePolygon'>마우스로 폴리곤생성(가운데 구멍)</Link>
                 <br />
+                <Link to='/mousePolygon'>마우스로 폴리곤생성(가운데 구멍)</Link>
                 <Link to='/marker'>Marker</Link>
                 <Link to='/cargoMaker'>화물정의</Link>
                 <Link to='/cargoMaker1'>화물정의1</Link>
                 <Link to='/convex'>Convex</Link>
                 <Link to='/splitPolygon1'>폴리곤 드래그 생성_1</Link>
                 <Link to='/closePoint'>가까운점 찾기</Link>
+                <Link to='/layerSelect'>레이어별 Select</Link>
                 <hr />
             </div>
-            <div style={{ width: '97vw', height: '75vh', marginLeft: '1rem' }}>
+            <div style={{ width: '97vw', height: '74vh', marginLeft: '1rem' }}>
                 <Route path='/' exact />
-                <Route path='/basicMap' component={BasicMap} />
+                <Route path='/testMap' component={TestMap} />
                 <Route path='/streetLabels' component={StreetLabels} />
                 <Route path='/measure' component={Measure} />
                 <Route path='/geoJson' component={GeoJson} />
@@ -75,6 +77,7 @@ function App() {
                 <Route path='/convex' component={Convex} />
                 <Route path='/splitPolygon1' component={SplitPolygon1} />
                 <Route path='/closePoint' component={ClosePoint} />
+                <Route path='/basicMap' component={BasicMap} />
             </div>
         </>
     );
